@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-# Welcome 👋
+# Welcome
 
 This is my personal website.
 

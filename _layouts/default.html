@@ -1,29 +1,387 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title | default: site.title }}</title>
+
+  <!--
+    FONTS
+    ──────────────────────────────────────────────────────────────────────────
+    Bebas Neue  → pure Bauhaus energy. Geometric, compressed, zero apology.
+                  Used for the site name / large headings.
+    IBM Plex Mono → functional, technical body text. Echoes the Bauhaus idea
+                    that form follows function — it looks exactly like what it is.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ══════════════════════════════════════════════════════════════════════
+       DESIGN TOKENS  (CSS custom properties)
+       ──────────────────────────────────────────────────────────────────────
+       WHY: Instead of hard-coding colors everywhere, we define them once here.
+       Changing --accent-red below changes every red on the whole site.
+       The [data-theme="dark"] block below OVERRIDES these for dark mode
+       without touching a single other line of CSS.
+    ══════════════════════════════════════════════════════════════════════ */
+    :root {
+      /* Bauhaus palette */
+      --bg:           #F5F0E8;   /* warm off-white, softer than pure #fff   */
+      --surface:      #FFFFFF;   /* card / nav surface                      */
+      --ink:          #0A0A0A;   /* near-black text                          */
+      --border:       #0A0A0A;   /* hard borders — neobrutalism signature    */
+
+      /* Three Bauhaus accent colours — use sparingly, intentionally */
+      --accent-red:   #E63329;
+      --accent-blue:  #1B4FD8;
+      --accent-yellow:#F5C800;
+
+      /* Neobrutalism hard-shadow — X offset, Y offset, spread */
+      --shadow:       4px 4px 0px var(--border);
+      --shadow-hover: 6px 6px 0px var(--border);
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'IBM Plex Mono', monospace;
+
+      --border-width: 2px;
+      --radius:       0px;   /* brutalism = NO rounded corners by default */
+    }
+
+    /* ── DARK MODE OVERRIDES ─────────────────────────────────────────────
+       Only the color tokens change. Every other rule stays the same.
+       This is the power of design tokens.
+    ──────────────────────────────────────────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:      #0A0A0A;
+      --surface: #141414;
+      --ink:     #F5F0E8;
+      --border:  #F5F0E8;
+      /* accents stay the same — they pop even harder on dark */
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       RESET  (just the essentials)
+    ══════════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       HEADER / NAV
+       ──────────────────────────────────────────────────────────────────────
+       NEOBRUTALISM PATTERN:
+         border + hard box-shadow = the look.
+         The shadow has no blur (last value = 0) — that's what makes it "hard".
+    ══════════════════════════════════════════════════════════════════════ */
+    header {
+      background: var(--surface);
+      border-bottom: var(--border-width) solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 1rem;
+    }
+
+    /* Site name — Bebas Neue makes this feel like a Bauhaus poster */
+    .site-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    /* A single red underscore accent on the active/hover state */
+    .site-name:hover { color: var(--accent-red); }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    nav a {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      padding: 0.35rem 0.75rem;
+      border: var(--border-width) solid transparent;
+      transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+    }
+
+    /* Hover: full neobrutalism card snap */
+    nav a:hover {
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+      transform: translate(-2px, -2px);   /* lifts the element up-left */
+    }
+
+    nav a.active {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+
+    /* ── DARK MODE TOGGLE ────────────────────────────────────────────────
+       A pill button, no icon library needed.
+    ──────────────────────────────────────────────────────────────────── */
+    #theme-toggle {
+      background: var(--surface);
+      color: var(--ink);
+      border: var(--border-width) solid var(--border);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.35rem 0.8rem;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.12s, transform 0.12s;
+    }
+
+    #theme-toggle:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translate(-2px, -2px);
+    }
+
+    #theme-toggle:active {
+      box-shadow: 0 0 0 var(--border);
+      transform: translate(4px, 4px);   /* snaps down on click */
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       MAIN CONTENT AREA
+    ══════════════════════════════════════════════════════════════════════ */
+    main {
+      flex: 1;              /* pushes footer to bottom */
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       TYPOGRAPHY  (sensible defaults for Markdown-rendered content)
+    ══════════════════════════════════════════════════════════════════════ */
+    main h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Bauhaus stripe accent: a colored left-border on h2 */
+    main h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      letter-spacing: 0.04em;
+      border-left: 6px solid var(--accent-yellow);
+      padding-left: 0.75rem;
+      margin: 2.5rem 0 1rem;
+    }
+
+    main h3 {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 2rem 0 0.5rem;
+    }
+
+    main p  { margin-bottom: 1rem; }
+    main ul, main ol { margin: 0 0 1rem 1.5rem; }
+    main li { margin-bottom: 0.4rem; }
+
+    main a {
+      color: var(--accent-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    main a:hover { color: var(--accent-red); }
+
+    /* Horizontal rule — a bold Bauhaus divider */
+    main hr {
+      border: none;
+      border-top: var(--border-width) solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* Inline code */
+    main code {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.4em;
+      font-size: 0.9em;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--surface);
+      border-top: var(--border-width) solid var(--border);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: 0.7;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       MOBILE  (simple stack at ≤600px)
+    ══════════════════════════════════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .header-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; }
+      .site-name    { font-size: 1.5rem; }
+      nav           { flex-wrap: wrap; }
+      main          { padding: 2rem 1rem; }
+    }
+
+  </style>
 </head>
 
 <body>
-  <p>Tabs count: {{ site.tabs | size }}</p>
 
-<nav>
-  <a href="{{ '/' | relative_url }}">Home</a>
+  <!-- ╔══════════════════════════════════════════════════════════╗
+       ║  HEADER                                                  ║
+       ╚══════════════════════════════════════════════════════════╝ -->
+  <header>
+    <div class="header-inner">
 
-  {% assign sorted_tabs = site.tabs | sort: "order" %}
+      <a href="{{ '/' | relative_url }}" class="site-name">
+        {{ site.title }}
+      </a>
 
-  {% for tab in sorted_tabs %}
-    <a href="{{ tab.url | relative_url }}">{{ tab.title }}</a>
-  {% endfor %}
-</nav>
+      <nav>
+        <!-- Re-integrated explicit Home link from the old template -->
+        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a>
 
-<hr>
+        <!--
+          Jekyll tip: page.url gives the current page's path.
+          We compare it to each tab's url to add the .active class.
+          The | relative_url filter prepends the baseurl automatically.
+        -->
+        {% assign sorted_tabs = site.tabs | sort: "order" %}
+        {% for tab in sorted_tabs %}
+          <a href="{{ tab.url | relative_url }}"
+            {% if page.url == tab.url %}class="active"{% endif %}>
+            {{ tab.title }}
+          </a>
+        {% endfor %}
+      </nav>
 
-<main>
-  {{ content }}
-</main>
+      <!--
+        DARK MODE TOGGLE
+        The button toggles a data-theme attribute on <html>.
+        CSS does the rest — no framework needed.
+      -->
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span id="theme-label">Dark</span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- ╔══════════════════════════════════════════════════════════╗
+       ║  MAIN                                                    ║
+       ╚══════════════════════════════════════════════════════════╝ -->
+  <main>
+    <!-- Re-integrated Tabs Count from the old template -->
+    <p><strong>Tabs count:</strong> {{ site.tabs | size }}</p>
+    
+    {{ content }}
+  </main>
+
+
+  <!-- ╔══════════════════════════════════════════════════════════╗
+       ║  FOOTER                                                  ║
+       ╚══════════════════════════════════════════════════════════╝ -->
+  <footer>
+    <div class="footer-inner">
+      <span>© {{ 'now' | date: "%Y" }} {{ site.title }}</span>
+      <span>Licensed under GNU GPL 3</span>
+    </div>
+  </footer>
+
+
+  <!-- ╔══════════════════════════════════════════════════════════╗
+       ║  DARK MODE SCRIPT                                        ║
+       ╚══════════════════════════════════════════════════════════╝
+    HOW IT WORKS:
+    1. On load, read localStorage to restore the user's last choice.
+    2. On button click, flip the data-theme attribute and save to localStorage.
+    3. CSS custom properties respond instantly — no page reload.
+  -->
+  <script>
+    const html    = document.documentElement;
+    const btn     = document.getElementById('theme-toggle');
+    const label   = document.getElementById('theme-label');
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      localStorage.setItem('theme', theme);
+    }
+
+    // Restore saved preference (or default to light)
+    const saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
+
+    btn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  </script>
 
 </body>
 </html>
