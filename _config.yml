@@ -11,12 +11,16 @@ permalink: pretty
 
 # future-proofing (you'll use this in Phase 3)
 collections:
+  tabs:
+    output: true
+    permalink: /:name/
   essays:
     output: true
     permalink: /essays/:title/
   projects:
     output: true
     permalink: /projects/:title/
+
 
 defaults:
   - scope:
