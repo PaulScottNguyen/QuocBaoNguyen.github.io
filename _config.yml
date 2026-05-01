@@ -1,0 +1,25 @@
+title: Quoc Bao Nguyen
+description: Personal website – essays, projects, and photography
+baseurl: "" 
+url: "https://paulscottnguyen.github.io/QuocBaoNguyen.github.io/"
+
+theme: null
+
+markdown: kramdown
+
+permalink: pretty
+
+# future-proofing (you'll use this in Phase 3)
+collections:
+  essays:
+    output: true
+    permalink: /essays/:title/
+  projects:
+    output: true
+    permalink: /projects/:title/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
