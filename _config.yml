@@ -9,7 +9,7 @@ markdown: kramdown
 
 permalink: pretty
 
-# future-proofing (you'll use this in Phase 3)
+
 collections:
   tabs:
     output: true
