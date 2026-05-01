@@ -11,7 +11,8 @@
   <p>Tabs count: {{ site.tabs | size }}</p>
 
 <nav>
-  <a href="/">Home</a>
+  <a href="{{ '/' | relative_url }}">Home</a>
+
 
   {% assign sorted_tabs = site.tabs | sort: "order" %}
 
