@@ -1,6 +1,6 @@
 title: Quoc Bao Nguyen
 description: Personal website – essays, projects, and photography
-baseurl: "" 
+baseurl: "https://paulscottnguyen.github.io/QuocBaoNguyen.github.io/" 
 url: "https://paulscottnguyen.github.io/QuocBaoNguyen.github.io/"
 
 theme: null
