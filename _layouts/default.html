@@ -30,7 +30,7 @@
     :root {
       /* Bauhaus palette */
       --bg:           #F5F0E8;   /* warm off-white, softer than pure #fff   */
-      --surface:      #FFFFFF;   /* card / nav surface                      */
+      --surface:      #FFFFFF;   /* card / nav surface                       */
       --ink:          #0A0A0A;   /* near-black text                          */
       --border:       #0A0A0A;   /* hard borders — neobrutalism signature    */
 
@@ -302,14 +302,9 @@
       </a>
 
       <nav>
-        <!-- Re-integrated explicit Home link from the old template -->
-        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a>
+        <a href="{{ '/' | relative_url }}"
+          {% if page.url == '/' %}class="active"{% endif %}>Home</a>
 
-        <!--
-          Jekyll tip: page.url gives the current page's path.
-          We compare it to each tab's url to add the .active class.
-          The | relative_url filter prepends the baseurl automatically.
-        -->
         {% assign sorted_tabs = site.tabs | sort: "order" %}
         {% for tab in sorted_tabs %}
           <a href="{{ tab.url | relative_url }}"
@@ -336,9 +331,6 @@
        ║  MAIN                                                    ║
        ╚══════════════════════════════════════════════════════════╝ -->
   <main>
-    <!-- Re-integrated Tabs Count from the old template -->
-    <p><strong>Tabs count:</strong> {{ site.tabs | size }}</p>
-    
     {{ content }}
   </main>
 
@@ -348,7 +340,7 @@
        ╚══════════════════════════════════════════════════════════╝ -->
   <footer>
     <div class="footer-inner">
-      <span>© 2026 {{ site.title }}</span>
+      <span>© {{ 'now' | date: "%Y" }} {{ site.title }}</span>
       <span>Licensed under GNU GPL 3</span>
     </div>
   </footer>
