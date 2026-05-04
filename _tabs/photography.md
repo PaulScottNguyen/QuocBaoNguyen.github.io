@@ -381,7 +381,7 @@ layout: default
      in public folders — it cannot read private data or write anything.
 ════════════════════════════════════════════════════════════════════════════ */
 {% raw %}
-const DRIVE_FOLDER_ID = 'drive.google.com/drive/folders/1RCGH-pNLrFkwy7MRgRAWXYDLOz19oqbm?usp=sharing';
+const DRIVE_FOLDER_ID = '1RCGH-pNLrFkwy7MRgRAWXYDLOz19oqbm';
 const DRIVE_API_KEY   = 'AIzaSyBhAAVs73HLulmFTodnFuo4m5OCn5lzKhg';
 
 
