@@ -326,7 +326,7 @@ main {
   <div class="accent-bar">
     <span></span><span></span><span></span>
   </div>
-  <p class="photo-bio">Photography is my creative outlet. I love capturing moments and stories. These photos of mine you are about to see will help you visualize who I am as a person hehe'v'./p>
+  <p class="photo-bio">Photography is my creative outlet. I love capturing moments and stories. These photos of mine you are about to see will help you visualize who I am as a person hehe'v'.</p>
   <p id="photo-count">Loading from Google Drive…</p>
 </div>
 
