@@ -9,11 +9,15 @@ order: 4
   /* ════════════════════════════════════════════════════════════════════════
      PAGE HEADER
      ──────────────────────────────────────────────────────────────────────── */
-  .photo-page-header {
-    margin-bottom: 3rem;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 1.5rem;
-  }
+main {
+  padding-top: 0 !important;
+}
+
+.photo-page-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1.5rem;
+}
 
   .photo-page-header h1 {
     font-family: var(--font-display);
@@ -308,11 +312,6 @@ order: 4
   opacity: 0.75;
   text-transform: none;
   letter-spacing: 0.02em;
-}
-
-/* Override the default main padding just for this page */
-main {
-  padding-top: 1.5rem;
 }
 
 </style>
