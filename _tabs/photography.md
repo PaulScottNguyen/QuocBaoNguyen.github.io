@@ -604,6 +604,8 @@ document.addEventListener('mouseup', () => {
 /* Touch drag support (same logic, different event API) */
 panel.addEventListener('touchstart', (e) => {
   if (currentScale <= 1) return;
+  // If the user tapped a button, don't intercept — let the click fire normally
+  if (e.target.closest('button')) return;
   const t = e.touches[0];
   isDragging = true;
   dragStart  = { x: t.clientX - imgOffset.x, y: t.clientY - imgOffset.y };
