@@ -11,6 +11,7 @@ order: 4
      ──────────────────────────────────────────────────────────────────────── */
 main {
   padding-top: 0 !important;
+  padding-top: 1.5rem !important;
 }
 
 .photo-page-header {
@@ -48,15 +49,18 @@ main {
   }
 
   /* Loading / error state */
-  #gallery-status {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.5;
-    padding: 4rem 0;
-    text-align: center;
-  }
+#gallery-status {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  text-align: center;
+}
+
+#gallery-status:not(:empty) {
+  padding: 4rem 0;
+}
 
 
   /* ════════════════════════════════════════════════════════════════════════
