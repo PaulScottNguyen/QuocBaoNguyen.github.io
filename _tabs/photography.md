@@ -4,19 +4,6 @@ title: Photography
 order: 4
 ---
 
----
-layout: default
----
-<!--
-  JEKYLL LAYOUT INHERITANCE
-  ─────────────────────────────────────────────────────────────────────────
-  The front matter above (`layout: default`) means Jekyll will wrap everything
-  in this file inside your default.html layout — inserting it at {{ content }}.
-  So you get the nav, header, and footer for free. No duplication.
-
-  This file ONLY contains what's unique to the photography page.
--->
-
 <style>
 
   /* ════════════════════════════════════════════════════════════════════════
