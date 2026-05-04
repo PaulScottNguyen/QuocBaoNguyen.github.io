@@ -300,6 +300,21 @@ order: 4
     .photo-card   { margin-bottom: 8px; }
   }
 
+.photo-bio {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  max-width: 600px;
+  opacity: 0.75;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Override the default main padding just for this page */
+main {
+  padding-top: 1.5rem;
+}
+
 </style>
 
 
@@ -311,9 +326,9 @@ order: 4
   <div class="accent-bar">
     <span></span><span></span><span></span>
   </div>
+  <p class="photo-bio">Photography is my creative outlet. I love capturing moments and stories. These photos of mine you are about to see will help you visualize who I am as a person hehe'v'./p>
   <p id="photo-count">Loading from Google Drive…</p>
 </div>
-
 
 <!-- ╔══════════════════════════════════════════════════════════════════════╗
      ║  GALLERY                                                             ║
