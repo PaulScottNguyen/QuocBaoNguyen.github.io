@@ -14,7 +14,7 @@ main {
 }
 
 .photo-page-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 3 rem;
   border-bottom: 2px solid var(--border);
   padding-bottom: 1.5rem;
 }
