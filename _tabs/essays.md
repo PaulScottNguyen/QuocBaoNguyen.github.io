@@ -645,7 +645,7 @@ main { padding-top: 0 !important; }
    CONFIGURATION  ← edit these two values
 ════════════════════════════════════════════════════════════════════════ */
 const ESSAYS_FOLDER_ID = '1aHmGyDIR1M8kSIv2Es-YK3scooYng_Ar';
-const DRIVE_API_KEY    = '1RCGH-pNLrFkwy7MRgRAWXYDLOz19oqbm';  // same key as photography
+const DRIVE_API_KEY    = 'AIzaSyBhAAVs73HLulmFTodnFuo4m5OCn5lzKhg';  // same key as photography
 
 
 /* ════════════════════════════════════════════════════════════════════════
