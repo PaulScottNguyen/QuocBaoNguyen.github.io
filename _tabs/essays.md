@@ -66,7 +66,6 @@ main { padding-top: 0 !important; }
   margin-bottom: 3rem;
 }
 
-/* The back wall of the shelf — subtly darker */
 .shelf-wall {
   background: var(--bg);
   border: 2px solid var(--border);
@@ -86,25 +85,17 @@ main { padding-top: 0 !important; }
   width: 100%;
 }
 
-/* ── WOODEN SHELF PLANK ──────────────────────────────────────────────
-   Built entirely in CSS — no images.
-   Multiple gradient layers simulate wood grain.
-──────────────────────────────────────────────────────────────────── */
 .shelf-plank {
   height: 28px;
   border: 2px solid #5a3a08;
   border-top-color: #e8c060;
   position: relative;
   overflow: hidden;
-
-  /* Main wood color gradient */
   background:
-    /* Highlight at top */
     linear-gradient(180deg,
       rgba(255,220,100,0.25) 0%,
       transparent 20%
     ),
-    /* Base wood */
     linear-gradient(180deg,
       #d4a843 0%,
       #c49030 20%,
@@ -113,14 +104,12 @@ main { padding-top: 0 !important; }
       #9a6818 80%,
       #7a5010 100%
     );
-
   box-shadow:
     0 6px 16px rgba(0,0,0,0.55),
     0 2px 4px rgba(0,0,0,0.3),
     inset 0 1px 2px rgba(255,220,120,0.3);
 }
 
-/* Wood grain lines */
 .shelf-plank::before {
   content: '';
   position: absolute;
@@ -142,7 +131,6 @@ main { padding-top: 0 !important; }
   );
 }
 
-/* Shadow under the plank edge */
 .shelf-plank::after {
   content: '';
   position: absolute;
@@ -153,12 +141,7 @@ main { padding-top: 0 !important; }
 }
 
 
-/* ── BOOK CARD ────────────────────────────────────────────────────────
-   Each book is a 3/4 aspect ratio card with:
-   - A "spine" illusion via ::before pseudo-element
-   - A bottom shadow via ::after
-   - Bauhaus-style cover with geometric shapes
-──────────────────────────────────────────────────────────────────── */
+/* ── BOOK CARD ──────────────────────────────────────────────────────── */
 .book-card {
   position: relative;
   width: 148px;
@@ -172,7 +155,6 @@ main { padding-top: 0 !important; }
   z-index: 10;
 }
 
-/* Left spine — simulates book thickness */
 .book-card::before {
   content: '';
   position: absolute;
@@ -189,7 +171,6 @@ main { padding-top: 0 !important; }
   z-index: 0;
 }
 
-/* Bottom depth shadow */
 .book-card::after {
   content: '';
   position: absolute;
@@ -215,7 +196,6 @@ main { padding-top: 0 !important; }
   box-shadow: 2px 0 6px rgba(0,0,0,0.25);
 }
 
-/* Color band takes the top 45% */
 .book-band {
   height: 45%;
   position: relative;
@@ -225,7 +205,6 @@ main { padding-top: 0 !important; }
   flex-shrink: 0;
 }
 
-/* Bauhaus geometric shape in the band */
 .book-shape {
   width: 52px;
   height: 52px;
@@ -243,7 +222,6 @@ main { padding-top: 0 !important; }
   background: none;
 }
 
-/* Text area */
 .book-text {
   padding: 0.6rem 0.65rem;
   flex: 1;
@@ -259,7 +237,6 @@ main { padding-top: 0 !important; }
   letter-spacing: 0.03em;
   line-height: 1.1;
   color: var(--ink);
-  /* Clamp to 3 lines */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -276,7 +253,6 @@ main { padding-top: 0 !important; }
   color: var(--ink);
 }
 
-/* Loading skeleton */
 .book-card.loading .book-cover {
   background: var(--surface);
   animation: shimmer 1.4s infinite;
@@ -325,10 +301,13 @@ main { padding-top: 0 !important; }
   pointer-events: all;
 }
 
-/* ── macOS SWIRL OPEN ANIMATION ─────────────────────────────────────
-   Starts tiny + rotated + blurred, springs to full size.
-   cubic-bezier(0.34, 1.56, 0.64, 1) = spring with slight overshoot.
-──────────────────────────────────────────────────────────────────── */
+/* hide the paper instantly when closing so the old page never flashes */
+#reader-overlay.closing #reader-toolbar,
+#reader-overlay.closing #reader-paper {
+  opacity: 0;
+  transition: opacity 0.08s ease-out;
+}
+
 @keyframes macOSOpen {
   0% {
     opacity: 0;
@@ -363,6 +342,8 @@ main { padding-top: 0 !important; }
     0 32px 80px rgba(0,0,0,0.7);
   overflow: hidden;
   transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
 #reader-panel.anim-open  { animation: macOSOpen  0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
@@ -424,12 +405,7 @@ main { padding-top: 0 !important; }
 }
 
 
-/* ── PAPER AREA ──────────────────────────────────────────────────────
-   The newspaper-textured area where PDF pages render.
-   Two CSS layers:
-     1. Aged paper color + horizontal print lines
-     2. SVG grain overlay (::after) for tactile texture
-──────────────────────────────────────────────────────────────────── */
+/* ── PAPER AREA ────────────────────────────────────────────────────── */
 #reader-paper {
   flex: 1;
   position: relative;
@@ -438,10 +414,7 @@ main { padding-top: 0 !important; }
   align-items: center;
   justify-content: center;
 
-  /* Aged newsprint base */
   background-color: #f2e4c0;
-
-  /* Subtle horizontal print lines — like a newspaper */
   background-image: repeating-linear-gradient(
     180deg,
     transparent          0px,
@@ -451,9 +424,8 @@ main { padding-top: 0 !important; }
   );
 }
 
-/* Dark mode: aged but dark paper */
 [data-theme="dark"] #reader-paper {
-  background-color: #1c1810;
+  background-color: #000;
   background-image: repeating-linear-gradient(
     180deg,
     transparent            0px,
@@ -463,12 +435,10 @@ main { padding-top: 0 !important; }
   );
 }
 
-/* Grain texture overlay — SVG feTurbulence rendered as data URI */
 #reader-paper::after {
   content: '';
   position: absolute;
   inset: 0;
-  /* Inline SVG noise pattern */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 250px 250px;
@@ -479,10 +449,9 @@ main { padding-top: 0 !important; }
 
 [data-theme="dark"] #reader-paper::after {
   mix-blend-mode: screen;
-  opacity: 0.4;
+  opacity: 0.38;
 }
 
-/* Loading spinner inside reader */
 #reader-loading {
   position: absolute;
   inset: 0;
@@ -503,12 +472,7 @@ main { padding-top: 0 !important; }
 [data-theme="dark"] #reader-loading { color: #c8b880; }
 
 
-/* ── PAGE FLIP CANVASES ──────────────────────────────────────────────
-   Two canvases stacked. The active one is on top.
-   Flip animation: active rotates out (rotateY → 90deg),
-   then staging rotates in (rotateY from -90deg → 0).
-   Both share the same perspective container.
-──────────────────────────────────────────────────────────────────── */
+/* ── PAGE CANVASES ─────────────────────────────────────────────────── */
 .canvas-wrapper {
   position: absolute;
   inset: 0;
@@ -517,48 +481,54 @@ main { padding-top: 0 !important; }
   justify-content: center;
   perspective: 1400px;
   z-index: 2;
+  transform-origin: 100% 100%;
+  backface-visibility: hidden;
+  will-change: transform, opacity, clip-path;
 }
 
-.canvas-wrapper canvas {
+.reader-page-canvas {
   display: block;
   max-width: calc(100% - 2rem);
   max-height: calc(100% - 2rem);
   box-shadow: 0 4px 24px rgba(0,0,0,0.25);
-  transform-origin: center center;
+  transform-origin: 100% 100%;
   backface-visibility: hidden;
+  will-change: transform, opacity, filter;
 }
 
-/* Page flip keyframes — forward (next page) */
-@keyframes flipOutFwd {
-  from { transform: perspective(1400px) rotateY(0deg); }
-  to   { transform: perspective(1400px) rotateY(-90deg); }
-}
-@keyframes flipInFwd {
-  from { transform: perspective(1400px) rotateY(90deg); }
-  to   { transform: perspective(1400px) rotateY(0deg); }
+[data-theme="dark"] .reader-page-canvas {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.08);
 }
 
-/* Page flip keyframes — backward (prev page) */
-@keyframes flipOutBwd {
-  from { transform: perspective(1400px) rotateY(0deg); }
-  to   { transform: perspective(1400px) rotateY(90deg); }
-}
-@keyframes flipInBwd {
-  from { transform: perspective(1400px) rotateY(-90deg); }
-  to   { transform: perspective(1400px) rotateY(0deg); }
+/* Page-turn motion: the lower-right corner lifts and drifts diagonally */
+@keyframes turnOutNext {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  40%  { transform: translate(-5%, 4%) rotate(-7deg) scale(0.99); opacity: 1; }
+  100% { transform: translate(-22%, 16%) rotate(-20deg) scale(0.93); opacity: 0; }
 }
 
-.flip-out-fwd { animation: flipOutFwd 0.3s ease-in  forwards; }
-.flip-out-bwd { animation: flipOutBwd 0.3s ease-in  forwards; }
-/* flip-in starts after flip-out reaches 90deg (0.28s delay) */
-.flip-in-fwd  {
-  transform: perspective(1400px) rotateY(90deg);
-  animation: flipInFwd 0.3s ease-out 0.28s forwards;
+@keyframes turnInNext {
+  0%   { transform: translate(15%, 12%) rotate(12deg) scale(0.95); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
-.flip-in-bwd  {
-  transform: perspective(1400px) rotateY(-90deg);
-  animation: flipInBwd 0.3s ease-out 0.28s forwards;
+
+@keyframes turnOutPrev {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  40%  { transform: translate(5%, 4%) rotate(7deg) scale(0.99); opacity: 1; }
+  100% { transform: translate(22%, 16%) rotate(20deg) scale(0.93); opacity: 0; }
 }
+
+@keyframes turnInPrev {
+  0%   { transform: translate(-15%, 12%) rotate(-12deg) scale(0.95); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
 
 
 /* ════════════════════════════════════════════════════════════════════
@@ -622,12 +592,12 @@ main { padding-top: 0 !important; }
 
       <!-- Canvas A -->
       <div class="canvas-wrapper" id="wrapper-a" style="z-index:3">
-        <canvas id="canvas-a"></canvas>
+        <canvas id="canvas-a" class="reader-page-canvas"></canvas>
       </div>
 
       <!-- Canvas B (staging — behind A initially) -->
       <div class="canvas-wrapper" id="wrapper-b" style="z-index:2">
-        <canvas id="canvas-b"></canvas>
+        <canvas id="canvas-b" class="reader-page-canvas"></canvas>
       </div>
     </div>
 
@@ -664,6 +634,22 @@ let currentPage = 1;
 let totalPages  = 0;
 let isFlipping  = false;
 let activeSlot  = 'a';   // which canvas-wrapper is on top
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   THEME HELPERS
+════════════════════════════════════════════════════════════════════════ */
+function isDarkTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ||
+         document.body.getAttribute('data-theme') === 'dark';
+}
+
+function syncPdfTheme() {
+  const dark = isDarkTheme();
+  document.querySelectorAll('.reader-page-canvas').forEach(canvas => {
+    canvas.classList.toggle('pdf-dark-mode', dark);
+  });
+}
 
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -771,23 +757,32 @@ async function openEssay(fileId, title) {
   const rdTitle = document.getElementById('rd-title');
 
   // Reset state
-  pdfDoc = null; currentPage = 1; totalPages = 0; activeSlot = 'a';
-  document.getElementById('wrapper-a').style.zIndex = '3';
-  document.getElementById('wrapper-b').style.zIndex = '2';
-  clearCanvas('a'); clearCanvas('b');
-  loading.style.display = 'flex';
-  rdTitle.textContent   = title;
-  updatePageInfo();
+  pdfDoc = null;
+  currentPage = 1;
+  totalPages = 0;
+  activeSlot = 'a';
+  isFlipping = false;
 
-  // Animate open
+  overlay.classList.remove('closing');
   overlay.classList.add('open');
   panel.classList.remove('anim-close');
   panel.classList.add('anim-open');
   panel.addEventListener('animationend', () => panel.classList.remove('anim-open'), { once: true });
 
+  document.getElementById('wrapper-a').style.zIndex = '3';
+  document.getElementById('wrapper-b').style.zIndex = '2';
+  clearCanvas('a');
+  clearCanvas('b');
+  syncPdfTheme();
+
+  loading.style.display = 'flex';
+  loading.textContent    = 'Opening…';
+  rdTitle.textContent    = title;
+  updatePageInfo();
+  updateNavButtons();
+
   document.body.style.overflow = 'hidden';
 
-  // Fetch PDF via Drive API (returns binary with proper CORS headers)
   try {
     const pdfUrl  = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${DRIVE_API_KEY}`;
     const res     = await fetch(pdfUrl);
@@ -800,7 +795,7 @@ async function openEssay(fileId, title) {
     await renderToSlot(currentPage, 'a');
     loading.style.display = 'none';
     updatePageInfo();
-    updateNavButtons();
+    updateNavButtons(false);
 
   } catch (err) {
     console.error('PDF load error:', err);
@@ -827,6 +822,8 @@ async function renderToSlot(pageNum, slot) {
   canvas.width  = vp.width;
   canvas.height = vp.height;
 
+  syncPdfTheme();
+
   await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
 }
 
@@ -837,15 +834,9 @@ function clearCanvas(slot) {
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   PAGE FLIP
-   Direction: 'next' or 'prev'
-   
-   HOW THE FLIP WORKS:
-   - activeSlot is on top (z-index 3), stagingSlot is behind (z-index 2)
-   - We render the new page on the staging canvas (invisible behind active)
-   - Animate active OUT (rotateY to ±90deg)
-   - Animate staging IN (rotateY from ±90deg to 0)
-   - After animation: swap which slot is "active"
+   PAGE TURN
+   The active page lifts from the lower-right corner and drifts diagonally,
+   closer to the Books app feel than a generic Y-axis flip.
 ════════════════════════════════════════════════════════════════════════ */
 async function flipPage(direction) {
   if (isFlipping || !pdfDoc) return;
@@ -856,29 +847,24 @@ async function flipPage(direction) {
   isFlipping = true;
   updateNavButtons(true);
 
-  const stagingSlot  = activeSlot === 'a' ? 'b' : 'a';
+  const stagingSlot   = activeSlot === 'a' ? 'b' : 'a';
   const activeWrapper  = document.getElementById(`wrapper-${activeSlot}`);
   const stagingWrapper = document.getElementById(`wrapper-${stagingSlot}`);
 
-  // Pre-render next page on staging (hidden behind active)
   await renderToSlot(nextPage, stagingSlot);
   stagingWrapper.style.zIndex = '2';
   activeWrapper.style.zIndex  = '3';
 
-  const outClass = direction === 'next' ? 'flip-out-fwd' : 'flip-out-bwd';
-  const inClass  = direction === 'next' ? 'flip-in-fwd'  : 'flip-in-bwd';
+  const outClass = direction === 'next' ? 'turn-out-next' : 'turn-out-prev';
+  const inClass  = direction === 'next' ? 'turn-in-next'  : 'turn-in-prev';
 
-  // Remove any leftover animation classes
-  activeWrapper.classList.remove('flip-out-fwd','flip-out-bwd','flip-in-fwd','flip-in-bwd');
-  stagingWrapper.classList.remove('flip-out-fwd','flip-out-bwd','flip-in-fwd','flip-in-bwd');
+  activeWrapper.classList.remove('turn-out-next', 'turn-out-prev', 'turn-in-next', 'turn-in-prev');
+  stagingWrapper.classList.remove('turn-out-next', 'turn-out-prev', 'turn-in-next', 'turn-in-prev');
 
-  // Start animation
   activeWrapper.classList.add(outClass);
   stagingWrapper.classList.add(inClass);
 
-  // Total duration = flip-out (0.3s) + delay (0.28s) + flip-in (0.3s) ≈ 600ms
   setTimeout(() => {
-    // Swap slots
     activeWrapper.classList.remove(outClass);
     stagingWrapper.classList.remove(inClass);
     stagingWrapper.style.zIndex = '3';
@@ -890,7 +876,7 @@ async function flipPage(direction) {
 
     updatePageInfo();
     updateNavButtons(false);
-  }, 620);
+  }, 460);
 }
 
 
@@ -901,9 +887,14 @@ function closeReader() {
   const overlay = document.getElementById('reader-overlay');
   const panel   = document.getElementById('reader-panel');
 
+  if (!overlay.classList.contains('open') || overlay.classList.contains('closing')) return;
+
+  overlay.classList.add('closing');
+  panel.classList.remove('anim-open');
   panel.classList.add('anim-close');
+
   panel.addEventListener('animationend', () => {
-    overlay.classList.remove('open');
+    overlay.classList.remove('open', 'closing');
     panel.classList.remove('anim-close');
     document.body.style.overflow = '';
     pdfDoc = null;
@@ -922,7 +913,9 @@ function updateNavButtons(disabled) {
   const prev = document.getElementById('rd-prev');
   const next = document.getElementById('rd-next');
   if (disabled) {
-    prev.disabled = true; next.disabled = true; return;
+    prev.disabled = true;
+    next.disabled = true;
+    return;
   }
   prev.disabled = currentPage <= 1;
   next.disabled = currentPage >= totalPages;
