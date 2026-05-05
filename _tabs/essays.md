@@ -392,7 +392,7 @@ main { padding-top: 0 !important; }
 }
 
 
-/* ── TEXT READER AREA ─────────────────────────────────────────────── */
+/* ── READER PAPER ───────────────────────────────────────────────────── */
 #reader-paper {
   flex: 1;
   position: relative;
@@ -400,32 +400,38 @@ main { padding-top: 0 !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f2e4c0;
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent          0px,
-    transparent          23px,
-    rgba(0,0,0,0.055)    23px,
-    rgba(0,0,0,0.055)    24px
-  );
+
+  /* natural paper instead of warm/yellow newsprint */
+  background-color: #fbfaf6;
+  background-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0%, rgba(255, 255, 255, 0) 16%),
+    repeating-linear-gradient(
+      180deg,
+      transparent          0px,
+      transparent          23px,
+      rgba(0,0,0,0.028)    23px,
+      rgba(0,0,0,0.028)    24px
+    );
 }
 
 [data-theme="dark"] #reader-paper {
-  background-color: #000;
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent            0px,
-    transparent            23px,
-    rgba(255,255,255,0.03) 23px,
-    rgba(255,255,255,0.03) 24px
-  );
+  background-color: #0f1114;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 16%),
+    repeating-linear-gradient(
+      180deg,
+      transparent            0px,
+      transparent            23px,
+      rgba(255,255,255,0.03) 23px,
+      rgba(255,255,255,0.03) 24px
+    );
 }
 
 #reader-paper::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 250px 250px;
   pointer-events: none;
@@ -435,7 +441,7 @@ main { padding-top: 0 !important; }
 
 [data-theme="dark"] #reader-paper::after {
   mix-blend-mode: screen;
-  opacity: 0.38;
+  opacity: 0.18;
 }
 
 #reader-loading {
@@ -452,16 +458,17 @@ main { padding-top: 0 !important; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.45;
-  color: #5a4a20;
+  color: #3f3b33;
 }
 
-[data-theme="dark"] #reader-loading { color: #c8b880; }
+[data-theme="dark"] #reader-loading { color: #d6d1c5; }
 
+/* page wrappers hold the rendered canvas */
 .page-wrapper {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   perspective: 1400px;
   z-index: 2;
@@ -471,58 +478,30 @@ main { padding-top: 0 !important; }
 }
 
 .page-shell {
-  width: min(100%, 760px);
+  width: 100%;
   height: 100%;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   padding: 1rem;
   box-sizing: border-box;
 }
 
-.extracted-page {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-  padding: clamp(1.25rem, 2.2vw, 2.2rem);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: clamp(16px, 1.6vw, 18px);
-  line-height: 1.9;
-  letter-spacing: 0.01em;
-  white-space: pre-wrap;
-  word-break: break-word;
-  text-wrap: pretty;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.03);
+.reader-page-canvas {
+  display: block;
+  max-width: calc(100% - 1rem);
+  max-height: calc(100% - 1rem);
+  width: auto;
+  height: auto;
+  background: transparent;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  transform-origin: 100% 100%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  image-rendering: auto;
 }
 
-.extracted-page strong,
-.extracted-page b {
-  font-family: var(--font-display);
-  letter-spacing: 0.02em;
-}
-
-[data-theme="dark"] .extracted-page {
-  color: #f2f0e6;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.03);
-}
-
-.extracted-page .page-label {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.45;
-  margin-bottom: 1rem;
-}
-
-.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-
+/* Page turn motion: lower-right corner lift */
 @keyframes turnOutNext {
   0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
   40%  { transform: translate(-5%, 4%) rotate(-7deg) scale(0.99); opacity: 1; }
@@ -547,6 +526,11 @@ main { padding-top: 0 !important; }
   100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
 
+.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+
 
 /* ════════════════════════════════════════════════════════════════════
    MOBILE
@@ -557,8 +541,7 @@ main { padding-top: 0 !important; }
   .book-card      { width: 110px; }
   #reader-panel   { width: 98vw; height: 95vh; }
   .rd-btn         { padding: 0 0.6rem; font-size: 0.65rem; }
-  .page-shell     { padding: 0.75rem; }
-  .extracted-page { font-size: 16px; line-height: 1.8; }
+  .page-shell     { padding: 0.5rem; }
 }
 
 </style>
@@ -605,19 +588,19 @@ main { padding-top: 0 !important; }
       <button class="rd-btn" id="rd-close" aria-label="Close">✕</button>
     </div>
 
-    <!-- Text reader pages -->
+    <!-- PDF canvases -->
     <div id="reader-paper">
       <div id="reader-loading">Opening…</div>
 
       <div class="page-wrapper" id="wrapper-a" style="z-index:3">
         <div class="page-shell">
-          <article class="extracted-page" id="page-a" aria-live="polite"></article>
+          <canvas id="canvas-a" class="reader-page-canvas"></canvas>
         </div>
       </div>
 
       <div class="page-wrapper" id="wrapper-b" style="z-index:2">
         <div class="page-shell">
-          <article class="extracted-page" id="page-b" aria-live="polite"></article>
+          <canvas id="canvas-b" class="reader-page-canvas"></canvas>
         </div>
       </div>
     </div>
@@ -650,11 +633,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
    STATE
 ════════════════════════════════════════════════════════════════════════ */
 let pdfDoc      = null;
-let currentPage = 1;
-let totalPages  = 0;
-let isFlipping  = false;
-let activeSlot  = 'a';
-const pageTextCache = new Map();
+let currentPage  = 1;
+let totalPages   = 0;
+let isFlipping   = false;
+let activeSlot   = 'a';   // which canvas-wrapper is on top
 
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -673,7 +655,7 @@ async function fetchEssays() {
   const url    = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&key=${DRIVE_API_KEY}&orderBy=createdTime+desc&pageSize=50`;
 
   try {
-    const res  = await fetch(url);
+    const res = await fetch(url);
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Drive API error');
@@ -759,7 +741,6 @@ async function openEssay(fileId, title) {
   totalPages = 0;
   activeSlot = 'a';
   isFlipping = false;
-  pageTextCache.clear();
 
   overlay.classList.remove('closing');
   overlay.classList.add('open');
@@ -769,32 +750,32 @@ async function openEssay(fileId, title) {
 
   document.getElementById('wrapper-a').style.zIndex = '3';
   document.getElementById('wrapper-b').style.zIndex = '2';
-  clearPage('a');
-  clearPage('b');
+  clearCanvas('a');
+  clearCanvas('b');
 
   loading.style.display = 'flex';
-  loading.textContent    = 'Opening…';
-  rdTitle.textContent    = title;
+  loading.textContent   = 'Opening…';
+  rdTitle.textContent   = title;
   updatePageInfo();
   updateNavButtons();
 
   document.body.style.overflow = 'hidden';
 
   try {
-    const pdfUrl  = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${DRIVE_API_KEY}`;
-    const res     = await fetch(pdfUrl);
+    const pdfUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${DRIVE_API_KEY}`;
+    const res    = await fetch(pdfUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const buffer  = await res.arrayBuffer();
-    pdfDoc        = await pdfjsLib.getDocument({ data: buffer }).promise;
-    totalPages    = pdfDoc.numPages;
-    currentPage   = 1;
+
+    const buffer = await res.arrayBuffer();
+    pdfDoc       = await pdfjsLib.getDocument({ data: buffer }).promise;
+    totalPages   = pdfDoc.numPages;
+    currentPage  = 1;
 
     await renderToSlot(currentPage, 'a');
-    prefetchAdjacentPages(currentPage);
-
     loading.style.display = 'none';
     updatePageInfo();
     updateNavButtons(false);
+
   } catch (err) {
     console.error('PDF load error:', err);
     loading.textContent = `Could not open PDF: ${err.message}`;
@@ -803,85 +784,47 @@ async function openEssay(fileId, title) {
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   TEXT EXTRACTION
+   SHARP PDF RENDERING
+   Renders pages at devicePixelRatio so they stay crisp instead of blurry.
 ════════════════════════════════════════════════════════════════════════ */
-async function extractPageText(pageNum) {
-  if (pageTextCache.has(pageNum)) return pageTextCache.get(pageNum);
-
-  const page = await pdfDoc.getPage(pageNum);
-  const content = await page.getTextContent({ normalizeWhitespace: true, disableCombineTextItems: false });
-
-  const items = content.items
-    .map((item) => ({
-      str: item.str || '',
-      x: item.transform?.[4] ?? 0,
-      y: item.transform?.[5] ?? 0,
-      w: item.width ?? 0,
-      h: item.height ?? 0,
-    }))
-    .filter(item => item.str.trim().length > 0)
-    .sort((a, b) => (b.y - a.y) || (a.x - b.x));
-
-  if (!items.length) {
-    const empty = '[No extractable text on this page]';
-    pageTextCache.set(pageNum, empty);
-    return empty;
-  }
-
-  const lines = [];
-  let currentLine = [];
-  let currentY = null;
-  const yTolerance = 2.75;
-
-  for (const item of items) {
-    if (currentY === null || Math.abs(item.y - currentY) > yTolerance) {
-      if (currentLine.length) lines.push(currentLine);
-      currentLine = [item];
-      currentY = item.y;
-    } else {
-      currentLine.push(item);
-    }
-  }
-  if (currentLine.length) lines.push(currentLine);
-
-  const text = lines.map(line => {
-    const sorted = line.sort((a, b) => a.x - b.x);
-    let out = sorted[0].str;
-    for (let i = 1; i < sorted.length; i++) {
-      const prev = sorted[i - 1];
-      const curr = sorted[i];
-      const gap = curr.x - (prev.x + prev.w);
-      const spaces = gap > 14 ? Math.min(8, Math.max(1, Math.round(gap / 10))) : 1;
-      out += ' '.repeat(spaces) + curr.str;
-    }
-    return out;
-  }).join('
-');
-
-  pageTextCache.set(pageNum, text);
-  return text;
-}
-
 async function renderToSlot(pageNum, slot) {
-  const pageEl = document.getElementById(`page-${slot}`);
-  const text = await extractPageText(pageNum);
-  pageEl.textContent = text;
-  pageEl.dataset.page = String(pageNum);
+  if (!pdfDoc) return;
+
+  const canvas = document.getElementById(`canvas-${slot}`);
+  const paper   = document.getElementById('reader-paper');
+  const page    = await pdfDoc.getPage(pageNum);
+
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  const paperW = paper.clientWidth - 40;
+  const paperH = paper.clientHeight - 40;
+
+  const base = page.getViewport({ scale: 1 });
+  const scale = Math.min(paperW / base.width, paperH / base.height);
+  const viewport = page.getViewport({ scale });
+
+  const renderWidth  = Math.floor(viewport.width * dpr);
+  const renderHeight = Math.floor(viewport.height * dpr);
+
+  canvas.width = renderWidth;
+  canvas.height = renderHeight;
+  canvas.style.width = `${Math.floor(viewport.width)}px`;
+  canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+  const context = canvas.getContext('2d', { alpha: false });
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  context.imageSmoothingEnabled = true;
+
+  await page.render({
+    canvasContext: context,
+    viewport,
+    transform: [dpr, 0, 0, dpr, 0, 0]
+  }).promise;
 }
 
-async function prefetchAdjacentPages(pageNum) {
-  const candidates = [pageNum - 1, pageNum + 1].filter(n => n >= 1 && n <= totalPages);
-  candidates.forEach(n => {
-    if (!pageTextCache.has(n)) {
-      extractPageText(n).catch(err => console.error('Prefetch error:', err));
-    }
-  });
-}
-
-function clearPage(slot) {
-  const el = document.getElementById(`page-${slot}`);
-  el.textContent = '';
-  delete el.dataset.page;
+function clearCanvas(slot) {
+  const c = document.getElementById(`canvas-${slot}`);
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
 }
 
 
@@ -897,15 +840,14 @@ async function flipPage(direction) {
   isFlipping = true;
   updateNavButtons(true);
 
-  const stagingSlot   = activeSlot === 'a' ? 'b' : 'a';
+  const stagingSlot    = activeSlot === 'a' ? 'b' : 'a';
   const activeWrapper  = document.getElementById(`wrapper-${activeSlot}`);
   const stagingWrapper = document.getElementById(`wrapper-${stagingSlot}`);
 
   await renderToSlot(nextPage, stagingSlot);
-  prefetchAdjacentPages(nextPage);
 
   stagingWrapper.style.zIndex = '2';
-  activeWrapper.style.zIndex  = '3';
+  activeWrapper.style.zIndex   = '3';
 
   const outClass = direction === 'next' ? 'turn-out-next' : 'turn-out-prev';
   const inClass  = direction === 'next' ? 'turn-in-next'  : 'turn-in-prev';
