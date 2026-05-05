@@ -292,111 +292,10 @@ main { padding-top: 0 !important; }
 
 #reader-overlay.closing #reader-toolbar,
 #reader-overlay.closing #reader-paper {
-  opacity: 0;
-  transition: opacity 0.08s ease-out;
-}
-
-@keyframes macOSOpen {
-  0% {
-    opacity: 0;
-    transform: scale(0.05) rotate(12deg);
-    filter: blur(24px);
-  }
-  65% {
-    opacity: 1;
-    transform: scale(1.04) rotate(-0.8deg);
-    filter: blur(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    filter: blur(0);
-  }
-}
-
-@keyframes macOSClose {
-  0%   { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
-  100% { transform: scale(0.05) rotate(12deg); opacity: 0; filter: blur(24px); }
-}
-
-#reader-panel {
-  width: min(740px, 92vw);
-  height: min(880px, 90vh);
-  display: flex;
-  flex-direction: column;
-  border: 2px solid var(--border);
-  box-shadow:
-    10px 10px 0px var(--border),
-    0 32px 80px rgba(0,0,0,0.7);
-  overflow: hidden;
-  transform-origin: center center;
-  transform-style: preserve-3d;
-  will-change: transform, opacity, filter;
-}
-
-#reader-panel.anim-open  { animation: macOSOpen  0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-#reader-panel.anim-close { animation: macOSClose 0.35s cubic-bezier(0.4,0,1,1) forwards; }
-
-#reader-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--surface);
-  border-bottom: 2px solid var(--border);
-  padding: 0;
-  flex-shrink: 0;
-  height: 44px;
-}
-
-.rd-btn {
-  background: var(--surface);
-  color: var(--ink);
-  border: none;
-  border-right: 2px solid var(--border);
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 0 1.1rem;
-  height: 100%;
-  transition: background 0.12s;
-  white-space: nowrap;
-}
-
-.rd-btn:last-child    { border-right: none; border-left: 2px solid var(--border); }
-.rd-btn:hover         { background: var(--accent-yellow); }
-#rd-close:hover       { background: var(--accent-red); color: #f5f0e8; }
-.rd-btn:disabled      { opacity: 0.25; cursor: not-allowed; }
-.rd-btn:disabled:hover { background: var(--surface); }
-
-#rd-title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 0.06em;
-  flex: 1;
-  padding: 0 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-#rd-page-info {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.45;
-  padding: 0 1rem;
-  white-space: nowrap;
-}
-
-
-/* ── READER PAPER ───────────────────────────────────────────────────── */
-#reader-paper {
   flex: 1;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -479,6 +378,8 @@ main { padding-top: 0 !important; }
 
 .page-shell {
   width: 100%;
+  min-width: 100%;
+  min-height: 100%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -489,8 +390,8 @@ main { padding-top: 0 !important; }
 
 .reader-page-canvas {
   display: block;
-  max-width: calc(100% - 1rem);
-  max-height: calc(100% - 1rem);
+  max-width: none;
+  max-height: none;
   width: auto;
   height: auto;
   background: transparent;
@@ -539,10 +440,11 @@ main { padding-top: 0 !important; }
   .shelf-wall     { padding: 1.5rem 1rem 0; }
   .books-row      { gap: 0.75rem; }
   .book-card      { width: 110px; }
-  #reader-panel   { width: 98vw; height: 95vh; }
+  #reader-panel   { width: 98vw; height: 95dvh; }
   .rd-btn         { padding: 0 0.6rem; font-size: 0.65rem; }
-  .page-shell     { padding: 0.5rem; }
+  .page-shell     { padding: 0.35rem; }
 }
+
 
 </style>
 
@@ -637,6 +539,7 @@ let currentPage  = 1;
 let totalPages   = 0;
 let isFlipping   = false;
 let activeSlot   = 'a';   // which canvas-wrapper is on top
+let rerenderTimer = null;
 
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -775,8 +678,12 @@ async function openEssay(fileId, title) {
     loading.style.display = 'none';
     updatePageInfo();
     updateNavButtons(false);
+    scheduleRerender();
 
   } catch (err) {
+    console.error('PDF load error:', err);
+    loading.textContent = `Could not open PDF: ${err.message}`;
+  }
     console.error('PDF load error:', err);
     loading.textContent = `Could not open PDF: ${err.message}`;
   }
@@ -791,33 +698,30 @@ async function renderToSlot(pageNum, slot) {
   if (!pdfDoc) return;
 
   const canvas = document.getElementById(`canvas-${slot}`);
-  const paper   = document.getElementById('reader-paper');
-  const page    = await pdfDoc.getPage(pageNum);
+  const paper  = document.getElementById('reader-paper');
+  const page   = await pdfDoc.getPage(pageNum);
 
   const dpr = Math.max(1, window.devicePixelRatio || 1);
-  const paperW = paper.clientWidth - 40;
-  const paperH = paper.clientHeight - 40;
+  const padding = window.matchMedia('(max-width: 600px)').matches ? 12 : 40;
+  const paperW = Math.max(0, paper.clientWidth - padding);
+  const paperH = Math.max(0, paper.clientHeight - padding);
 
   const base = page.getViewport({ scale: 1 });
-  const scale = Math.min(paperW / base.width, paperH / base.height);
-  const viewport = page.getViewport({ scale });
+  const fitScale = Math.min(paperW / base.width, paperH / base.height);
+  const renderScale = fitScale * dpr;
+  const viewport = page.getViewport({ scale: renderScale });
 
-  const renderWidth  = Math.floor(viewport.width * dpr);
-  const renderHeight = Math.floor(viewport.height * dpr);
-
-  canvas.width = renderWidth;
-  canvas.height = renderHeight;
-  canvas.style.width = `${Math.floor(viewport.width)}px`;
-  canvas.style.height = `${Math.floor(viewport.height)}px`;
+  canvas.width = Math.floor(viewport.width);
+  canvas.height = Math.floor(viewport.height);
+  canvas.style.width = `${Math.floor(viewport.width / dpr)}px`;
+  canvas.style.height = `${Math.floor(viewport.height / dpr)}px`;
 
   const context = canvas.getContext('2d', { alpha: false });
-  context.setTransform(dpr, 0, 0, dpr, 0, 0);
   context.imageSmoothingEnabled = true;
 
   await page.render({
     canvasContext: context,
-    viewport,
-    transform: [dpr, 0, 0, dpr, 0, 0]
+    viewport
   }).promise;
 }
 
@@ -825,6 +729,17 @@ function clearCanvas(slot) {
   const c = document.getElementById(`canvas-${slot}`);
   const ctx = c.getContext('2d');
   ctx.clearRect(0, 0, c.width, c.height);
+}
+
+function scheduleRerender() {
+  if (!pdfDoc) return;
+  clearTimeout(rerenderTimer);
+  rerenderTimer = setTimeout(async () => {
+    if (!pdfDoc) return;
+    clearCanvas('a');
+    clearCanvas('b');
+    await renderToSlot(currentPage, activeSlot);
+  }, 120);
 }
 
 
@@ -941,6 +856,18 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape')     closeReader();
   if (e.key === 'ArrowRight') flipPage('next');
   if (e.key === 'ArrowLeft')  flipPage('prev');
+});
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('reader-overlay').classList.contains('open')) {
+    scheduleRerender();
+  }
+});
+
+window.addEventListener('orientationchange', () => {
+  if (document.getElementById('reader-overlay').classList.contains('open')) {
+    setTimeout(scheduleRerender, 150);
+  }
 });
 
 
