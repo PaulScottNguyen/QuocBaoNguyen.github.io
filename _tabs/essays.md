@@ -54,11 +54,6 @@ main { padding-top: 0 !important; }
 
 /* ════════════════════════════════════════════════════════════════════════
    SHELF SECTION
-   ──────────────────────────────────────────────────────────────────────
-   Skeuomorphism meets Brutalism:
-   - Real wood grain (CSS gradients + repeating lines)
-   - Hard Bauhaus borders on each book
-   - Books stand on a physical plank
 ════════════════════════════════════════════════════════════════════════ */
 .shelf-section {
   position: relative;
@@ -276,11 +271,6 @@ main { padding-top: 0 !important; }
 
 /* ════════════════════════════════════════════════════════════════════════
    READER OVERLAY
-   ──────────────────────────────────────────────────────────────────────
-   Three layers:
-     1. #reader-overlay  — dark backdrop
-     2. #reader-panel    — the paper/book frame
-     3. #reader-paper    — the textured page area
 ════════════════════════════════════════════════════════════════════════ */
 #reader-overlay {
   position: fixed;
@@ -290,7 +280,6 @@ main { padding-top: 0 !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -301,7 +290,6 @@ main { padding-top: 0 !important; }
   pointer-events: all;
 }
 
-/* hide the paper instantly when closing so the old page never flashes */
 #reader-overlay.closing #reader-toolbar,
 #reader-overlay.closing #reader-paper {
   opacity: 0;
@@ -327,7 +315,7 @@ main { padding-top: 0 !important; }
 }
 
 @keyframes macOSClose {
-  0%   { transform: scale(1) rotate(0deg);   opacity: 1; filter: blur(0); }
+  0%   { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
   100% { transform: scale(0.05) rotate(12deg); opacity: 0; filter: blur(24px); }
 }
 
@@ -349,7 +337,6 @@ main { padding-top: 0 !important; }
 #reader-panel.anim-open  { animation: macOSOpen  0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
 #reader-panel.anim-close { animation: macOSClose 0.35s cubic-bezier(0.4,0,1,1) forwards; }
 
-/* ── READER TOOLBAR ─────────────────────────────────────────────── */
 #reader-toolbar {
   display: flex;
   align-items: center;
@@ -405,7 +392,7 @@ main { padding-top: 0 !important; }
 }
 
 
-/* ── PAPER AREA ────────────────────────────────────────────────────── */
+/* ── TEXT READER AREA ─────────────────────────────────────────────── */
 #reader-paper {
   flex: 1;
   position: relative;
@@ -413,7 +400,6 @@ main { padding-top: 0 !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: #f2e4c0;
   background-image: repeating-linear-gradient(
     180deg,
@@ -471,36 +457,72 @@ main { padding-top: 0 !important; }
 
 [data-theme="dark"] #reader-loading { color: #c8b880; }
 
-
-/* ── PAGE CANVASES ─────────────────────────────────────────────────── */
-.canvas-wrapper {
+.page-wrapper {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   perspective: 1400px;
   z-index: 2;
   transform-origin: 100% 100%;
   backface-visibility: hidden;
-  will-change: transform, opacity, clip-path;
+  will-change: transform, opacity;
 }
 
-.reader-page-canvas {
-  display: block;
-  max-width: calc(100% - 2rem);
-  max-height: calc(100% - 2rem);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
-  transform-origin: 100% 100%;
-  backface-visibility: hidden;
-  will-change: transform, opacity, filter;
+.page-shell {
+  width: min(100%, 760px);
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-[data-theme="dark"] .reader-page-canvas {
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.08);
+.extracted-page {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: clamp(1.25rem, 2.2vw, 2.2rem);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.6vw, 18px);
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-wrap: pretty;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.03);
 }
 
-/* Page-turn motion: the lower-right corner lifts and drifts diagonally */
+.extracted-page strong,
+.extracted-page b {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .extracted-page {
+  color: #f2f0e6;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.extracted-page .page-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 1rem;
+}
+
+.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+
 @keyframes turnOutNext {
   0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
   40%  { transform: translate(-5%, 4%) rotate(-7deg) scale(0.99); opacity: 1; }
@@ -525,11 +547,6 @@ main { padding-top: 0 !important; }
   100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
 
-.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-
 
 /* ════════════════════════════════════════════════════════════════════
    MOBILE
@@ -540,6 +557,8 @@ main { padding-top: 0 !important; }
   .book-card      { width: 110px; }
   #reader-panel   { width: 98vw; height: 95vh; }
   .rd-btn         { padding: 0 0.6rem; font-size: 0.65rem; }
+  .page-shell     { padding: 0.75rem; }
+  .extracted-page { font-size: 16px; line-height: 1.8; }
 }
 
 </style>
@@ -586,18 +605,20 @@ main { padding-top: 0 !important; }
       <button class="rd-btn" id="rd-close" aria-label="Close">✕</button>
     </div>
 
-    <!-- Paper with PDF canvases -->
+    <!-- Text reader pages -->
     <div id="reader-paper">
       <div id="reader-loading">Opening…</div>
 
-      <!-- Canvas A -->
-      <div class="canvas-wrapper" id="wrapper-a" style="z-index:3">
-        <canvas id="canvas-a" class="reader-page-canvas"></canvas>
+      <div class="page-wrapper" id="wrapper-a" style="z-index:3">
+        <div class="page-shell">
+          <article class="extracted-page" id="page-a" aria-live="polite"></article>
+        </div>
       </div>
 
-      <!-- Canvas B (staging — behind A initially) -->
-      <div class="canvas-wrapper" id="wrapper-b" style="z-index:2">
-        <canvas id="canvas-b" class="reader-page-canvas"></canvas>
+      <div class="page-wrapper" id="wrapper-b" style="z-index:2">
+        <div class="page-shell">
+          <article class="extracted-page" id="page-b" aria-live="polite"></article>
+        </div>
       </div>
     </div>
 
@@ -620,7 +641,6 @@ const DRIVE_API_KEY    = 'AIzaSyBhAAVs73HLulmFTodnFuo4m5OCn5lzKhg';  // same key
 
 /* ════════════════════════════════════════════════════════════════════════
    PDF.JS SETUP
-   The workerSrc must match the version of pdf.min.js loaded above.
 ════════════════════════════════════════════════════════════════════════ */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -633,30 +653,12 @@ let pdfDoc      = null;
 let currentPage = 1;
 let totalPages  = 0;
 let isFlipping  = false;
-let activeSlot  = 'a';   // which canvas-wrapper is on top
-
-
-/* ════════════════════════════════════════════════════════════════════════
-   THEME HELPERS
-════════════════════════════════════════════════════════════════════════ */
-function isDarkTheme() {
-  return document.documentElement.getAttribute('data-theme') === 'dark' ||
-         document.body.getAttribute('data-theme') === 'dark';
-}
-
-function syncPdfTheme() {
-  const dark = isDarkTheme();
-  document.querySelectorAll('.reader-page-canvas').forEach(canvas => {
-    canvas.classList.toggle('pdf-dark-mode', dark);
-  });
-}
+let activeSlot  = 'a';
+const pageTextCache = new Map();
 
 
 /* ════════════════════════════════════════════════════════════════════════
    FETCH ESSAY LIST FROM DRIVE
-   We filter for PDFs and Google Docs.
-   orderBy=name sorts alphabetically — change to createdTime desc
-   if you'd rather show newest first.
 ════════════════════════════════════════════════════════════════════════ */
 async function fetchEssays() {
   const status = document.getElementById('shelf-status');
@@ -701,7 +703,6 @@ async function fetchEssays() {
 
 /* ════════════════════════════════════════════════════════════════════════
    RENDER A BOOK CARD
-   Bauhaus covers: alternating accent colors, rotating geometric shapes.
 ════════════════════════════════════════════════════════════════════════ */
 const BAND_COLORS = [
   'var(--accent-red)',
@@ -746,9 +747,6 @@ function renderBookCard(file, index) {
 
 /* ════════════════════════════════════════════════════════════════════════
    OPEN ESSAY
-   1. Show the reader overlay with macOS open animation
-   2. Download PDF via Drive API alt=media (has CORS headers for public files)
-   3. Render page 1
 ════════════════════════════════════════════════════════════════════════ */
 async function openEssay(fileId, title) {
   const overlay = document.getElementById('reader-overlay');
@@ -756,12 +754,12 @@ async function openEssay(fileId, title) {
   const loading = document.getElementById('reader-loading');
   const rdTitle = document.getElementById('rd-title');
 
-  // Reset state
   pdfDoc = null;
   currentPage = 1;
   totalPages = 0;
   activeSlot = 'a';
   isFlipping = false;
+  pageTextCache.clear();
 
   overlay.classList.remove('closing');
   overlay.classList.add('open');
@@ -771,9 +769,8 @@ async function openEssay(fileId, title) {
 
   document.getElementById('wrapper-a').style.zIndex = '3';
   document.getElementById('wrapper-b').style.zIndex = '2';
-  clearCanvas('a');
-  clearCanvas('b');
-  syncPdfTheme();
+  clearPage('a');
+  clearPage('b');
 
   loading.style.display = 'flex';
   loading.textContent    = 'Opening…';
@@ -793,10 +790,11 @@ async function openEssay(fileId, title) {
     currentPage   = 1;
 
     await renderToSlot(currentPage, 'a');
+    prefetchAdjacentPages(currentPage);
+
     loading.style.display = 'none';
     updatePageInfo();
     updateNavButtons(false);
-
   } catch (err) {
     console.error('PDF load error:', err);
     loading.textContent = `Could not open PDF: ${err.message}`;
@@ -805,38 +803,90 @@ async function openEssay(fileId, title) {
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   RENDER A PAGE TO A CANVAS SLOT
-   Scales the page to fit within the paper area (like object-fit: contain).
+   TEXT EXTRACTION
 ════════════════════════════════════════════════════════════════════════ */
-async function renderToSlot(pageNum, slot) {
-  const canvas  = document.getElementById(`canvas-${slot}`);
-  const paper   = document.getElementById('reader-paper');
-  const page    = await pdfDoc.getPage(pageNum);
+async function extractPageText(pageNum) {
+  if (pageTextCache.has(pageNum)) return pageTextCache.get(pageNum);
 
-  const paperW  = paper.clientWidth  - 32;
-  const paperH  = paper.clientHeight - 32;
-  const base    = page.getViewport({ scale: 1 });
-  const scale   = Math.min(paperW / base.width, paperH / base.height);
-  const vp      = page.getViewport({ scale });
+  const page = await pdfDoc.getPage(pageNum);
+  const content = await page.getTextContent({ normalizeWhitespace: true, disableCombineTextItems: false });
 
-  canvas.width  = vp.width;
-  canvas.height = vp.height;
+  const items = content.items
+    .map((item) => ({
+      str: item.str || '',
+      x: item.transform?.[4] ?? 0,
+      y: item.transform?.[5] ?? 0,
+      w: item.width ?? 0,
+      h: item.height ?? 0,
+    }))
+    .filter(item => item.str.trim().length > 0)
+    .sort((a, b) => (b.y - a.y) || (a.x - b.x));
 
-  syncPdfTheme();
+  if (!items.length) {
+    const empty = '[No extractable text on this page]';
+    pageTextCache.set(pageNum, empty);
+    return empty;
+  }
 
-  await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+  const lines = [];
+  let currentLine = [];
+  let currentY = null;
+  const yTolerance = 2.75;
+
+  for (const item of items) {
+    if (currentY === null || Math.abs(item.y - currentY) > yTolerance) {
+      if (currentLine.length) lines.push(currentLine);
+      currentLine = [item];
+      currentY = item.y;
+    } else {
+      currentLine.push(item);
+    }
+  }
+  if (currentLine.length) lines.push(currentLine);
+
+  const text = lines.map(line => {
+    const sorted = line.sort((a, b) => a.x - b.x);
+    let out = sorted[0].str;
+    for (let i = 1; i < sorted.length; i++) {
+      const prev = sorted[i - 1];
+      const curr = sorted[i];
+      const gap = curr.x - (prev.x + prev.w);
+      const spaces = gap > 14 ? Math.min(8, Math.max(1, Math.round(gap / 10))) : 1;
+      out += ' '.repeat(spaces) + curr.str;
+    }
+    return out;
+  }).join('
+');
+
+  pageTextCache.set(pageNum, text);
+  return text;
 }
 
-function clearCanvas(slot) {
-  const c = document.getElementById(`canvas-${slot}`);
-  c.getContext('2d').clearRect(0, 0, c.width, c.height);
+async function renderToSlot(pageNum, slot) {
+  const pageEl = document.getElementById(`page-${slot}`);
+  const text = await extractPageText(pageNum);
+  pageEl.textContent = text;
+  pageEl.dataset.page = String(pageNum);
+}
+
+async function prefetchAdjacentPages(pageNum) {
+  const candidates = [pageNum - 1, pageNum + 1].filter(n => n >= 1 && n <= totalPages);
+  candidates.forEach(n => {
+    if (!pageTextCache.has(n)) {
+      extractPageText(n).catch(err => console.error('Prefetch error:', err));
+    }
+  });
+}
+
+function clearPage(slot) {
+  const el = document.getElementById(`page-${slot}`);
+  el.textContent = '';
+  delete el.dataset.page;
 }
 
 
 /* ════════════════════════════════════════════════════════════════════════
    PAGE TURN
-   The active page lifts from the lower-right corner and drifts diagonally,
-   closer to the Books app feel than a generic Y-axis flip.
 ════════════════════════════════════════════════════════════════════════ */
 async function flipPage(direction) {
   if (isFlipping || !pdfDoc) return;
@@ -852,6 +902,8 @@ async function flipPage(direction) {
   const stagingWrapper = document.getElementById(`wrapper-${stagingSlot}`);
 
   await renderToSlot(nextPage, stagingSlot);
+  prefetchAdjacentPages(nextPage);
+
   stagingWrapper.style.zIndex = '2';
   activeWrapper.style.zIndex  = '3';
 
@@ -903,7 +955,6 @@ function closeReader() {
 
 
 /* ── UI HELPERS ──────────────────────────────────────────────────────── */
-
 function updatePageInfo() {
   const el = document.getElementById('rd-page-info');
   el.textContent = pdfDoc ? `${currentPage} / ${totalPages}` : '— / —';
@@ -934,7 +985,6 @@ function stripExtension(name) {
 
 
 /* ── EVENT LISTENERS ─────────────────────────────────────────────────── */
-
 document.getElementById('rd-prev').addEventListener('click',  () => flipPage('prev'));
 document.getElementById('rd-next').addEventListener('click',  () => flipPage('next'));
 document.getElementById('rd-close').addEventListener('click', closeReader);
