@@ -13,7 +13,7 @@ main { padding-top: 0 !important; }
 
 .essays-header {
   padding: 2rem 0 1.5rem;
-  border-bottom: 2px solid var(--border);
+  border-bottom: 4px solid var(--ink, #000); /* Thickened for brutalism */
   margin-bottom: 0;
 }
 
@@ -21,34 +21,39 @@ main { padding-top: 0 !important; }
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 10vw, 7rem);
   line-height: 0.9;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em; /* Tighter tracking for bold brutalist look */
+  text-transform: uppercase;
 }
 
 .essays-header .accent-bar {
   display: flex;
-  height: 6px;
+  height: 12px; /* Thicker bar */
   margin-top: 1rem;
+  border: 2px solid var(--ink, #000);
 }
-.accent-bar span:nth-child(1) { background: var(--accent-red);    flex: 3; }
-.accent-bar span:nth-child(2) { background: var(--accent-blue);   flex: 1; }
-.accent-bar span:nth-child(3) { background: var(--accent-yellow); flex: 2; }
+.accent-bar span:nth-child(1) { background: var(--accent-red, #ff3b30);    flex: 3; border-right: 2px solid var(--ink, #000); }
+.accent-bar span:nth-child(2) { background: var(--accent-blue, #007aff);   flex: 1; border-right: 2px solid var(--ink, #000); }
+.accent-bar span:nth-child(3) { background: var(--accent-yellow, #ffcc00); flex: 2; }
 
 .essays-bio {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  line-height: 1.7;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   max-width: 600px;
-  opacity: 0.65;
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
 
 #essay-count {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.45;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  background: var(--ink, #000);
+  color: var(--surface, #fff);
+  display: inline-block;
+  padding: 4px 10px;
 }
 
 
@@ -63,7 +68,7 @@ main { padding-top: 0 !important; }
 
 .shelf-wall {
   background: var(--bg);
-  border: 2px solid var(--border);
+  border: 4px solid var(--ink, #000);
   border-bottom: none;
   padding: 2rem 2rem 0;
   min-height: 260px;
@@ -73,7 +78,7 @@ main { padding-top: 0 !important; }
 
 .books-row {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.5rem;
   align-items: flex-end;
   flex-wrap: wrap;
   padding-bottom: 0;
@@ -81,58 +86,13 @@ main { padding-top: 0 !important; }
 }
 
 .shelf-plank {
-  height: 28px;
-  border: 2px solid #5a3a08;
-  border-top-color: #e8c060;
+  height: 32px;
+  border: 4px solid var(--ink, #000);
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(180deg,
-      rgba(255,220,100,0.25) 0%,
-      transparent 20%
-    ),
-    linear-gradient(180deg,
-      #d4a843 0%,
-      #c49030 20%,
-      #b07820 40%,
-      #c49030 60%,
-      #9a6818 80%,
-      #7a5010 100%
-    );
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.55),
-    0 2px 4px rgba(0,0,0,0.3),
-    inset 0 1px 2px rgba(255,220,120,0.3);
-}
-
-.shelf-plank::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent             0px,
-    transparent             35px,
-    rgba(0,0,0,0.06)        35px,
-    rgba(0,0,0,0.06)        37px,
-    transparent             37px,
-    transparent             60px,
-    rgba(255,255,255,0.05)  60px,
-    rgba(255,255,255,0.05)  62px,
-    transparent             62px,
-    transparent             95px,
-    rgba(0,0,0,0.04)        95px,
-    rgba(0,0,0,0.04)        96px
-  );
-}
-
-.shelf-plank::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0; right: 0;
-  height: 8px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 100%);
+  background: var(--accent-yellow, #ffcc00);
+  box-shadow: 
+    8px 8px 0px rgba(0,0,0,1); /* Brutalist hard shadow */
 }
 
 
@@ -142,53 +102,30 @@ main { padding-top: 0 !important; }
   width: 148px;
   flex-shrink: 0;
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .book-card:hover {
-  transform: translateY(-18px);
+  transform: translate(-4px, -8px);
   z-index: 10;
-}
-
-.book-card::before {
-  content: '';
-  position: absolute;
-  left: -7px;
-  top: 6px;
-  bottom: -6px;
-  width: 7px;
-  background: linear-gradient(
-    90deg,
-    rgba(0,0,0,0.7) 0%,
-    rgba(0,0,0,0.4) 100%
-  );
-  transform: skewY(0.3deg);
-  z-index: 0;
-}
-
-.book-card::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: -7px;
-  right: 0;
-  height: 7px;
-  background: rgba(0,0,0,0.45);
-  transform: skewX(-0.5deg);
-  z-index: 0;
 }
 
 .book-cover {
   width: 100%;
   aspect-ratio: 3/4;
-  border: 2px solid var(--border);
+  border: 3px solid var(--ink, #000);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background: var(--surface);
-  box-shadow: 2px 0 6px rgba(0,0,0,0.25);
+  background: var(--surface, #fff);
+  box-shadow: 6px 6px 0px rgba(0,0,0,1); /* Hard brutalist shadow */
+  transition: box-shadow 0.2s ease;
+}
+
+.book-card:hover .book-cover {
+  box-shadow: 12px 12px 0px rgba(0,0,0,1);
 }
 
 .book-band {
@@ -198,12 +135,14 @@ main { padding-top: 0 !important; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  border-bottom: 3px solid var(--ink, #000);
 }
 
 .book-shape {
   width: 52px;
   height: 52px;
-  border: 3px solid rgba(255,255,255,0.55);
+  border: 4px solid var(--ink, #000);
+  background: var(--surface, #fff);
   flex-shrink: 0;
 }
 
@@ -213,12 +152,12 @@ main { padding-top: 0 !important; }
   width: 0; height: 0;
   border-left: 26px solid transparent;
   border-right: 26px solid transparent;
-  border-bottom: 46px solid rgba(255,255,255,0.4);
+  border-bottom: 46px solid var(--ink, #000);
   background: none;
 }
 
 .book-text {
-  padding: 0.6rem 0.65rem;
+  padding: 0.75rem 0.65rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -228,10 +167,11 @@ main { padding-top: 0 !important; }
 
 .book-title {
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   line-height: 1.1;
-  color: var(--ink);
+  color: var(--ink, #000);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -239,33 +179,13 @@ main { padding-top: 0 !important; }
 }
 
 .book-meta {
-  font-size: 0.55rem;
-  font-weight: 700;
+  font-size: 0.6rem;
+  font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.45;
-  margin-top: 0.4rem;
-  color: var(--ink);
-}
-
-.book-card.loading .book-cover {
-  background: var(--surface);
-  animation: shimmer 1.4s infinite;
-}
-
-@keyframes shimmer {
-  0%,100% { opacity: 0.6; }
-  50%      { opacity: 1; }
-}
-
-#shelf-status {
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.45;
-  padding: 3rem 0;
-  width: 100%;
-  text-align: center;
+  color: var(--ink, #000);
+  border-top: 2px solid var(--ink, #000);
+  padding-top: 0.25rem;
 }
 
 
@@ -275,14 +195,15 @@ main { padding-top: 0 !important; }
 #reader-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.88);
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
 }
 
 #reader-overlay.open {
@@ -290,57 +211,122 @@ main { padding-top: 0 !important; }
   pointer-events: all;
 }
 
-#reader-overlay.closing #reader-toolbar,
-#reader-overlay.closing #reader-paper {
+/* FIX: Ensure overlay fades out smoothly without flashing content */
+#reader-overlay.closing {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+@keyframes macOSOpen {
+  0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes macOSClose {
+  0%   { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.95) translateY(20px); }
+}
+
+#reader-panel {
+  width: min(780px, 94vw);
+  height: min(900px, 92vh);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface, #fff);
+  border: 4px solid var(--ink, #000); /* Bauhaus border */
+  box-shadow: 16px 16px 0px rgba(0,0,0,1); /* Brutalist block shadow */
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+#reader-panel.anim-open  { animation: macOSOpen  0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+#reader-panel.anim-close { animation: macOSClose 0.3s cubic-bezier(0.4, 0, 1, 1) forwards; }
+
+#reader-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--accent-yellow, #ffcc00); /* Bauhaus Pop */
+  border-bottom: 4px solid var(--ink, #000);
+  padding: 0;
+  flex-shrink: 0;
+  height: 54px;
+}
+
+.rd-btn {
+  background: transparent;
+  color: var(--ink, #000);
+  border: none;
+  border-right: 4px solid var(--ink, #000);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0 1.5rem;
+  height: 100%;
+  transition: background 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+.rd-btn:last-child    { border-right: none; border-left: 4px solid var(--ink, #000); background: var(--accent-red, #ff3b30); color: #fff;}
+.rd-btn:hover         { background: var(--ink, #000); color: var(--surface, #fff); }
+#rd-close:hover       { background: #000; color: #fff; }
+.rd-btn:disabled      { opacity: 0.4; cursor: not-allowed; background: transparent; color: var(--ink, #000); }
+
+#rd-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  flex: 1;
+  padding: 0 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+#rd-page-info {
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: var(--ink, #000);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin: 0 1rem;
+  white-space: nowrap;
+}
+
+
+/* ── READER PAPER ───────────────────────────────────────────────────── */
+#reader-paper {
   flex: 1;
   position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* natural paper instead of warm/yellow newsprint */
-  background-color: #fbfaf6;
-  background-image:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0%, rgba(255, 255, 255, 0) 16%),
-    repeating-linear-gradient(
-      180deg,
-      transparent          0px,
-      transparent          23px,
-      rgba(0,0,0,0.028)    23px,
-      rgba(0,0,0,0.028)    24px
-    );
+  background-color: #e5e5e5; /* Base board */
 }
 
-[data-theme="dark"] #reader-paper {
-  background-color: #0f1114;
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 16%),
-    repeating-linear-gradient(
-      180deg,
-      transparent            0px,
-      transparent            23px,
-      rgba(255,255,255,0.03) 23px,
-      rgba(255,255,255,0.03) 24px
-    );
-}
+[data-theme="dark"] #reader-paper { background-color: #1a1a1a; }
 
-#reader-paper::after {
-  content: '';
+/* FIX: Texture sits explicitly OVER the pages now */
+#paper-texture {
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 250px 250px;
   pointer-events: none;
   mix-blend-mode: multiply;
-  z-index: 10;
+  z-index: 100;
 }
-
-[data-theme="dark"] #reader-paper::after {
-  mix-blend-mode: screen;
-  opacity: 0.18;
+[data-theme="dark"] #paper-texture { 
+  mix-blend-mode: screen; 
+  opacity: 0.2; 
 }
 
 #reader-loading {
@@ -351,100 +337,90 @@ main { padding-top: 0 !important; }
   justify-content: center;
   background: inherit;
   z-index: 20;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1.2rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.45;
-  color: #3f3b33;
 }
 
-[data-theme="dark"] #reader-loading { color: #d6d1c5; }
-
-/* page wrappers hold the rendered canvas */
 .page-wrapper {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1400px;
+  perspective: 2500px; /* Stronger perspective for 3D curl */
   z-index: 2;
-  transform-origin: 100% 100%;
-  backface-visibility: hidden;
   will-change: transform, opacity;
 }
 
 .page-shell {
   width: 100%;
-  min-width: 100%;
-  min-height: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.5rem;
   box-sizing: border-box;
 }
 
 .reader-page-canvas {
   display: block;
-  max-width: none;
-  max-height: none;
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
   width: auto;
   height: auto;
-  background: transparent;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-  transform-origin: 100% 100%;
+  /* FIX: Ensure pure white for inversion baseline & brutalist borders */
+  background: #ffffff; 
+  border: 3px solid var(--ink, #000);
+  box-shadow: 12px 12px 0px rgba(0,0,0,0.85); /* Hard shadow */
+  transform-origin: 50% 50%;
   backface-visibility: hidden;
-  will-change: transform, opacity;
-  image-rendering: auto;
 }
 
-/* Page turn motion: lower-right corner lift */
-@keyframes turnOutNext {
-  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-  40%  { transform: translate(-5%, 4%) rotate(-7deg) scale(0.99); opacity: 1; }
-  100% { transform: translate(-22%, 16%) rotate(-20deg) scale(0.93); opacity: 0; }
+/* FIX: Dark mode PDF conversion */
+[data-theme="dark"] .reader-page-canvas {
+  /* Inverts the canvas, retains the white background as pitch black and text as white. Hue-rotate saves image colors */
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.1);
+  box-shadow: 12px 12px 0px rgba(0,0,0,1);
+  border-color: #333;
 }
 
-@keyframes turnInNext {
-  0%   { transform: translate(15%, 12%) rotate(12deg) scale(0.95); opacity: 0; }
+/* iOS 5-6 Style Diagonal Curl Motion */
+/* Lift down-right corner and roll to upper-left */
+@keyframes rollOutNext {
+  0%   { transform: rotate3d(-1, 1, 0, 0deg); opacity: 1; }
   35%  { opacity: 1; }
-  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: rotate3d(-1, 1, 0, 110deg) translate3d(-15%, -15%, 250px); opacity: 0; }
 }
 
-@keyframes turnOutPrev {
-  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-  40%  { transform: translate(5%, 4%) rotate(7deg) scale(0.99); opacity: 1; }
-  100% { transform: translate(22%, 16%) rotate(20deg) scale(0.93); opacity: 0; }
+@keyframes rollInPrev {
+  0%   { transform: rotate3d(-1, 1, 0, 110deg) translate3d(-15%, -15%, 250px); opacity: 0; }
+  65%  { opacity: 1; }
+  100% { transform: rotate3d(-1, 1, 0, 0deg); opacity: 1; }
 }
 
-@keyframes turnInPrev {
-  0%   { transform: translate(-15%, 12%) rotate(-12deg) scale(0.95); opacity: 0; }
-  35%  { opacity: 1; }
-  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-}
+@keyframes stayHidden { 0%, 100% { opacity: 0; } }
+@keyframes stayVisible { 0%, 100% { opacity: 1; } }
 
-.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
-.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-out-next { animation: rollOutNext 0.6s cubic-bezier(0.3, 0.1, 0.2, 1) forwards; transform-origin: 50% 50%; }
+.turn-in-next  { animation: stayVisible 0.6s forwards; }
+
+.turn-out-prev { animation: stayVisible 0.6s forwards; }
+.turn-in-prev  { animation: rollInPrev 0.6s cubic-bezier(0.3, 0.1, 0.2, 1) forwards; transform-origin: 50% 50%; }
 
 
 /* ════════════════════════════════════════════════════════════════════
    MOBILE
 ════════════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  .shelf-wall     { padding: 1.5rem 1rem 0; }
-  .books-row      { gap: 0.75rem; }
-  .book-card      { width: 110px; }
-  #reader-panel   { width: 98vw; height: 95dvh; }
-  .rd-btn         { padding: 0 0.6rem; font-size: 0.65rem; }
-  .page-shell     { padding: 0.35rem; }
+  .essays-header h1 { font-size: 3rem; }
+  .book-card      { width: 120px; }
+  #reader-panel   { width: 98vw; height: 96vh; border-width: 2px; }
+  .rd-btn         { padding: 0 0.8rem; font-size: 0.75rem; border-right-width: 2px; }
+  .page-shell     { padding: 0.5rem; }
+  .reader-page-canvas { box-shadow: 6px 6px 0px rgba(0,0,0,0.85); border-width: 2px;}
 }
-
 
 </style>
 
@@ -492,6 +468,8 @@ main { padding-top: 0 !important; }
 
     <!-- PDF canvases -->
     <div id="reader-paper">
+      <!-- Fixed texture layer sits purely above the canvases -->
+      <div id="paper-texture"></div>
       <div id="reader-loading">Opening…</div>
 
       <div class="page-wrapper" id="wrapper-a" style="z-index:3">
@@ -539,7 +517,6 @@ let currentPage  = 1;
 let totalPages   = 0;
 let isFlipping   = false;
 let activeSlot   = 'a';   // which canvas-wrapper is on top
-let rerenderTimer = null;
 
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -678,12 +655,8 @@ async function openEssay(fileId, title) {
     loading.style.display = 'none';
     updatePageInfo();
     updateNavButtons(false);
-    scheduleRerender();
 
   } catch (err) {
-    console.error('PDF load error:', err);
-    loading.textContent = `Could not open PDF: ${err.message}`;
-  }
     console.error('PDF load error:', err);
     loading.textContent = `Could not open PDF: ${err.message}`;
   }
@@ -692,36 +665,38 @@ async function openEssay(fileId, title) {
 
 /* ════════════════════════════════════════════════════════════════════════
    SHARP PDF RENDERING
-   Renders pages at devicePixelRatio so they stay crisp instead of blurry.
 ════════════════════════════════════════════════════════════════════════ */
 async function renderToSlot(pageNum, slot) {
   if (!pdfDoc) return;
 
   const canvas = document.getElementById(`canvas-${slot}`);
-  const paper  = document.getElementById('reader-paper');
-  const page   = await pdfDoc.getPage(pageNum);
+  const paper   = document.getElementById('reader-paper');
+  const page    = await pdfDoc.getPage(pageNum);
 
   const dpr = Math.max(1, window.devicePixelRatio || 1);
-  const padding = window.matchMedia('(max-width: 600px)').matches ? 12 : 40;
-  const paperW = Math.max(0, paper.clientWidth - padding);
-  const paperH = Math.max(0, paper.clientHeight - padding);
+  const paperW = paper.clientWidth - 40;
+  const paperH = paper.clientHeight - 40;
 
   const base = page.getViewport({ scale: 1 });
-  const fitScale = Math.min(paperW / base.width, paperH / base.height);
-  const renderScale = fitScale * dpr;
-  const viewport = page.getViewport({ scale: renderScale });
+  const scale = Math.min(paperW / base.width, paperH / base.height);
+  const viewport = page.getViewport({ scale });
 
-  canvas.width = Math.floor(viewport.width);
-  canvas.height = Math.floor(viewport.height);
-  canvas.style.width = `${Math.floor(viewport.width / dpr)}px`;
-  canvas.style.height = `${Math.floor(viewport.height / dpr)}px`;
+  const renderWidth  = Math.floor(viewport.width * dpr);
+  const renderHeight = Math.floor(viewport.height * dpr);
+
+  canvas.width = renderWidth;
+  canvas.height = renderHeight;
+  canvas.style.width = `${Math.floor(viewport.width)}px`;
+  canvas.style.height = `${Math.floor(viewport.height)}px`;
 
   const context = canvas.getContext('2d', { alpha: false });
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
   context.imageSmoothingEnabled = true;
 
   await page.render({
     canvasContext: context,
-    viewport
+    viewport,
+    transform: [dpr, 0, 0, dpr, 0, 0]
   }).promise;
 }
 
@@ -731,20 +706,9 @@ function clearCanvas(slot) {
   ctx.clearRect(0, 0, c.width, c.height);
 }
 
-function scheduleRerender() {
-  if (!pdfDoc) return;
-  clearTimeout(rerenderTimer);
-  rerenderTimer = setTimeout(async () => {
-    if (!pdfDoc) return;
-    clearCanvas('a');
-    clearCanvas('b');
-    await renderToSlot(currentPage, activeSlot);
-  }, 120);
-}
-
 
 /* ════════════════════════════════════════════════════════════════════════
-   PAGE TURN
+   PAGE TURN - Diagonal Peel
 ════════════════════════════════════════════════════════════════════════ */
 async function flipPage(direction) {
   if (isFlipping || !pdfDoc) return;
@@ -761,8 +725,14 @@ async function flipPage(direction) {
 
   await renderToSlot(nextPage, stagingSlot);
 
-  stagingWrapper.style.zIndex = '2';
-  activeWrapper.style.zIndex   = '3';
+  // Z-index handling for correct overlapping during animation
+  if (direction === 'next') {
+    stagingWrapper.style.zIndex = '2';
+    activeWrapper.style.zIndex  = '3';
+  } else {
+    stagingWrapper.style.zIndex = '3';
+    activeWrapper.style.zIndex  = '2';
+  }
 
   const outClass = direction === 'next' ? 'turn-out-next' : 'turn-out-prev';
   const inClass  = direction === 'next' ? 'turn-in-next'  : 'turn-in-prev';
@@ -776,6 +746,8 @@ async function flipPage(direction) {
   setTimeout(() => {
     activeWrapper.classList.remove(outClass);
     stagingWrapper.classList.remove(inClass);
+    
+    // Reset to idle stack
     stagingWrapper.style.zIndex = '3';
     activeWrapper.style.zIndex  = '2';
 
@@ -785,7 +757,7 @@ async function flipPage(direction) {
 
     updatePageInfo();
     updateNavButtons(false);
-  }, 460);
+  }, 620); // Syncs with CSS animation timing + small buffer
 }
 
 
@@ -798,6 +770,7 @@ function closeReader() {
 
   if (!overlay.classList.contains('open') || overlay.classList.contains('closing')) return;
 
+  // Add closing to overlay immediately to sync fade outs
   overlay.classList.add('closing');
   panel.classList.remove('anim-open');
   panel.classList.add('anim-close');
@@ -856,18 +829,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape')     closeReader();
   if (e.key === 'ArrowRight') flipPage('next');
   if (e.key === 'ArrowLeft')  flipPage('prev');
-});
-
-window.addEventListener('resize', () => {
-  if (document.getElementById('reader-overlay').classList.contains('open')) {
-    scheduleRerender();
-  }
-});
-
-window.addEventListener('orientationchange', () => {
-  if (document.getElementById('reader-overlay').classList.contains('open')) {
-    setTimeout(scheduleRerender, 150);
-  }
 });
 
 
