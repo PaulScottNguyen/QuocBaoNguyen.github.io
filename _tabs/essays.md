@@ -13,7 +13,7 @@ main { padding-top: 0 !important; }
 
 .essays-header {
   padding: 2rem 0 1.5rem;
-  border-bottom: 4px solid var(--ink, #000); /* Thickened for brutalism */
+  border-bottom: 2px solid var(--border);
   margin-bottom: 0;
 }
 
@@ -21,39 +21,34 @@ main { padding-top: 0 !important; }
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 10vw, 7rem);
   line-height: 0.9;
-  letter-spacing: -0.02em; /* Tighter tracking for bold brutalist look */
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .essays-header .accent-bar {
   display: flex;
-  height: 12px; /* Thicker bar */
+  height: 6px;
   margin-top: 1rem;
-  border: 2px solid var(--ink, #000);
 }
-.accent-bar span:nth-child(1) { background: var(--accent-red, #ff3b30);    flex: 3; border-right: 2px solid var(--ink, #000); }
-.accent-bar span:nth-child(2) { background: var(--accent-blue, #007aff);   flex: 1; border-right: 2px solid var(--ink, #000); }
-.accent-bar span:nth-child(3) { background: var(--accent-yellow, #ffcc00); flex: 2; }
+.accent-bar span:nth-child(1) { background: var(--accent-red);    flex: 3; }
+.accent-bar span:nth-child(2) { background: var(--accent-blue);   flex: 1; }
+.accent-bar span:nth-child(3) { background: var(--accent-yellow); flex: 2; }
 
 .essays-bio {
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
   max-width: 600px;
-  font-weight: 600;
+  opacity: 0.65;
   letter-spacing: 0.02em;
 }
 
 #essay-count {
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-top: 1rem;
-  background: var(--ink, #000);
-  color: var(--surface, #fff);
-  display: inline-block;
-  padding: 4px 10px;
+  opacity: 0.45;
+  margin-top: 0.5rem;
 }
 
 
@@ -68,7 +63,7 @@ main { padding-top: 0 !important; }
 
 .shelf-wall {
   background: var(--bg);
-  border: 4px solid var(--ink, #000);
+  border: 2px solid var(--border);
   border-bottom: none;
   padding: 2rem 2rem 0;
   min-height: 260px;
@@ -78,7 +73,7 @@ main { padding-top: 0 !important; }
 
 .books-row {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: flex-end;
   flex-wrap: wrap;
   padding-bottom: 0;
@@ -86,13 +81,58 @@ main { padding-top: 0 !important; }
 }
 
 .shelf-plank {
-  height: 32px;
-  border: 4px solid var(--ink, #000);
+  height: 28px;
+  border: 2px solid #5a3a08;
+  border-top-color: #e8c060;
   position: relative;
   overflow: hidden;
-  background: var(--accent-yellow, #ffcc00);
-  box-shadow: 
-    8px 8px 0px rgba(0,0,0,1); /* Brutalist hard shadow */
+  background:
+    linear-gradient(180deg,
+      rgba(255,220,100,0.25) 0%,
+      transparent 20%
+    ),
+    linear-gradient(180deg,
+      #d4a843 0%,
+      #c49030 20%,
+      #b07820 40%,
+      #c49030 60%,
+      #9a6818 80%,
+      #7a5010 100%
+    );
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.55),
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,220,120,0.3);
+}
+
+.shelf-plank::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent             0px,
+    transparent             35px,
+    rgba(0,0,0,0.06)        35px,
+    rgba(0,0,0,0.06)        37px,
+    transparent             37px,
+    transparent             60px,
+    rgba(255,255,255,0.05)  60px,
+    rgba(255,255,255,0.05)  62px,
+    transparent             62px,
+    transparent             95px,
+    rgba(0,0,0,0.04)        95px,
+    rgba(0,0,0,0.04)        96px
+  );
+}
+
+.shelf-plank::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0; right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 100%);
 }
 
 
@@ -102,30 +142,53 @@ main { padding-top: 0 !important; }
   width: 148px;
   flex-shrink: 0;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .book-card:hover {
-  transform: translate(-4px, -8px);
+  transform: translateY(-18px);
   z-index: 10;
+}
+
+.book-card::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 6px;
+  bottom: -6px;
+  width: 7px;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.7) 0%,
+    rgba(0,0,0,0.4) 100%
+  );
+  transform: skewY(0.3deg);
+  z-index: 0;
+}
+
+.book-card::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: -7px;
+  right: 0;
+  height: 7px;
+  background: rgba(0,0,0,0.45);
+  transform: skewX(-0.5deg);
+  z-index: 0;
 }
 
 .book-cover {
   width: 100%;
   aspect-ratio: 3/4;
-  border: 3px solid var(--ink, #000);
+  border: 2px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background: var(--surface, #fff);
-  box-shadow: 6px 6px 0px rgba(0,0,0,1); /* Hard brutalist shadow */
-  transition: box-shadow 0.2s ease;
-}
-
-.book-card:hover .book-cover {
-  box-shadow: 12px 12px 0px rgba(0,0,0,1);
+  background: var(--surface);
+  box-shadow: 2px 0 6px rgba(0,0,0,0.25);
 }
 
 .book-band {
@@ -135,14 +198,12 @@ main { padding-top: 0 !important; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-bottom: 3px solid var(--ink, #000);
 }
 
 .book-shape {
   width: 52px;
   height: 52px;
-  border: 4px solid var(--ink, #000);
-  background: var(--surface, #fff);
+  border: 3px solid rgba(255,255,255,0.55);
   flex-shrink: 0;
 }
 
@@ -152,12 +213,12 @@ main { padding-top: 0 !important; }
   width: 0; height: 0;
   border-left: 26px solid transparent;
   border-right: 26px solid transparent;
-  border-bottom: 46px solid var(--ink, #000);
+  border-bottom: 46px solid rgba(255,255,255,0.4);
   background: none;
 }
 
 .book-text {
-  padding: 0.75rem 0.65rem;
+  padding: 0.6rem 0.65rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -167,11 +228,10 @@ main { padding-top: 0 !important; }
 
 .book-title {
   font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
   line-height: 1.1;
-  color: var(--ink, #000);
+  color: var(--ink);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -179,13 +239,33 @@ main { padding-top: 0 !important; }
 }
 
 .book-meta {
-  font-size: 0.6rem;
-  font-weight: 800;
+  font-size: 0.55rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink, #000);
-  border-top: 2px solid var(--ink, #000);
-  padding-top: 0.25rem;
+  opacity: 0.45;
+  margin-top: 0.4rem;
+  color: var(--ink);
+}
+
+.book-card.loading .book-cover {
+  background: var(--surface);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%,100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+#shelf-status {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  padding: 3rem 0;
+  width: 100%;
+  text-align: center;
 }
 
 
@@ -195,15 +275,14 @@ main { padding-top: 0 !important; }
 #reader-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.88);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
 
 #reader-overlay.open {
@@ -211,92 +290,129 @@ main { padding-top: 0 !important; }
   pointer-events: all;
 }
 
-/* FIX: Ensure overlay fades out smoothly without flashing content */
-#reader-overlay.closing {
-  opacity: 0 !important;
-  pointer-events: none;
+#reader-overlay.closing #reader-toolbar,
+#reader-overlay.closing #reader-paper {
+  opacity: 0;
+  transition: opacity 0.08s ease-out;
 }
 
 @keyframes macOSOpen {
-  0% { opacity: 0; transform: scale(0.95) translateY(20px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0% {
+    opacity: 0;
+    transform: scale(0.05) rotate(12deg);
+    filter: blur(24px);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.04) rotate(-0.8deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
 }
 
 @keyframes macOSClose {
-  0%   { opacity: 1; transform: scale(1) translateY(0); }
-  100% { opacity: 0; transform: scale(0.95) translateY(20px); }
+  0%   { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
+  100% { transform: scale(0.05) rotate(12deg); opacity: 0; filter: blur(24px); }
 }
 
 #reader-panel {
-  width: min(780px, 94vw);
-  height: min(900px, 92vh);
+  width: min(740px, 92vw);
+  height: min(880px, calc(var(--vh, 1vh) * 90));
   display: flex;
   flex-direction: column;
-  background: var(--surface, #fff);
-  border: 4px solid var(--ink, #000); /* Bauhaus border */
-  box-shadow: 16px 16px 0px rgba(0,0,0,1); /* Brutalist block shadow */
+  border: 2px solid var(--border);
+  box-shadow:
+    10px 10px 0px var(--border),
+    0 32px 80px rgba(0,0,0,0.7);
   overflow: hidden;
-  will-change: transform, opacity;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
-#reader-panel.anim-open  { animation: macOSOpen  0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-#reader-panel.anim-close { animation: macOSClose 0.3s cubic-bezier(0.4, 0, 1, 1) forwards; }
+#reader-panel.anim-open  { animation: macOSOpen  0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+#reader-panel.anim-close { animation: macOSClose 0.35s cubic-bezier(0.4,0,1,1) forwards; }
 
 #reader-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--accent-yellow, #ffcc00); /* Bauhaus Pop */
-  border-bottom: 4px solid var(--ink, #000);
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
   padding: 0;
   flex-shrink: 0;
-  height: 54px;
+  height: 44px;
 }
 
 .rd-btn {
-  background: transparent;
-  color: var(--ink, #000);
+  background: var(--surface);
+  color: var(--ink);
   border: none;
-  border-right: 4px solid var(--ink, #000);
+  border-right: 2px solid var(--border);
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 0 1.5rem;
+  padding: 0 1.1rem;
   height: 100%;
-  transition: background 0.1s, color 0.1s;
+  transition: background 0.12s;
   white-space: nowrap;
+  touch-action: manipulation;
 }
 
-.rd-btn:last-child    { border-right: none; border-left: 4px solid var(--ink, #000); background: var(--accent-red, #ff3b30); color: #fff;}
-.rd-btn:hover         { background: var(--ink, #000); color: var(--surface, #fff); }
-#rd-close:hover       { background: #000; color: #fff; }
-.rd-btn:disabled      { opacity: 0.4; cursor: not-allowed; background: transparent; color: var(--ink, #000); }
+.rd-btn:last-child    { border-right: none; border-left: 2px solid var(--border); }
+.rd-btn:hover         { background: var(--accent-yellow); }
+#rd-close:hover       { background: var(--accent-red); color: #f5f0e8; }
+.rd-btn:disabled      { opacity: 0.25; cursor: not-allowed; }
+.rd-btn:disabled:hover { background: var(--surface); }
 
 #rd-title {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: 0.04em;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
   flex: 1;
   padding: 0 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: center;
+  color: var(--ink);
 }
 
 #rd-page-info {
-  font-size: 0.85rem;
-  font-weight: 800;
-  background: var(--ink, #000);
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin: 0 1rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  padding: 0 1rem;
   white-space: nowrap;
+  color: var(--ink);
+  background: transparent;
+}
+
+[data-theme="dark"] #reader-toolbar {
+  background: #121212;
+  border-bottom-color: #383838;
+}
+
+[data-theme="dark"] #reader-toolbar .rd-btn {
+  background: #121212;
+  color: #f5f5f5;
+  border-color: #383838;
+}
+
+[data-theme="dark"] #reader-toolbar .rd-btn:hover {
+  background: #2b2b2b;
+}
+
+[data-theme="dark"] #rd-title,
+[data-theme="dark"] #rd-page-info {
+  color: #f5f5f5;
 }
 
 
@@ -308,25 +424,50 @@ main { padding-top: 0 !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e5e5e5; /* Base board */
+  background-color: #fbfaf6;
+  background-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0%, rgba(255, 255, 255, 0) 16%),
+    repeating-linear-gradient(
+      180deg,
+      transparent          0px,
+      transparent          23px,
+      rgba(0,0,0,0.028)    23px,
+      rgba(0,0,0,0.028)    24px
+    );
+  touch-action: none;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-[data-theme="dark"] #reader-paper { background-color: #1a1a1a; }
+[data-theme="dark"] #reader-paper {
+  background-color: #0f1114;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 16%),
+    repeating-linear-gradient(
+      180deg,
+      transparent            0px,
+      transparent            23px,
+      rgba(255,255,255,0.03) 23px,
+      rgba(255,255,255,0.03) 24px
+    );
+}
 
-/* FIX: Texture sits explicitly OVER the pages now */
-#paper-texture {
+#reader-paper::after {
+  content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 250px 250px;
   pointer-events: none;
   mix-blend-mode: multiply;
-  z-index: 100;
+  z-index: 10;
 }
-[data-theme="dark"] #paper-texture { 
-  mix-blend-mode: screen; 
-  opacity: 0.2; 
+
+[data-theme="dark"] #reader-paper::after {
+  mix-blend-mode: screen;
+  opacity: 0.18;
 }
 
 #reader-loading {
@@ -337,11 +478,16 @@ main { padding-top: 0 !important; }
   justify-content: center;
   background: inherit;
   z-index: 20;
-  font-weight: 800;
-  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  opacity: 0.45;
+  color: #3f3b33;
 }
+
+[data-theme="dark"] #reader-loading { color: #d6d1c5; }
 
 .page-wrapper {
   position: absolute;
@@ -349,77 +495,91 @@ main { padding-top: 0 !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 2500px; /* Stronger perspective for 3D curl */
+  perspective: 1400px;
   z-index: 2;
+  transform-origin: 100% 100%;
+  backface-visibility: hidden;
   will-change: transform, opacity;
 }
 
 .page-shell {
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1rem;
   box-sizing: border-box;
+  touch-action: none;
 }
 
 .reader-page-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: block;
-  max-width: calc(100% - 2rem);
-  max-height: calc(100% - 2rem);
-  width: auto;
-  height: auto;
-  /* FIX: Ensure pure white for inversion baseline & brutalist borders */
-  background: #ffffff; 
-  border: 3px solid var(--ink, #000);
-  box-shadow: 12px 12px 0px rgba(0,0,0,0.85); /* Hard shadow */
-  transform-origin: 50% 50%;
+  background: transparent;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  transform-origin: center center;
   backface-visibility: hidden;
+  will-change: transform;
+  image-rendering: auto;
+  touch-action: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
-/* FIX: Dark mode PDF conversion */
-[data-theme="dark"] .reader-page-canvas {
-  /* Inverts the canvas, retains the white background as pitch black and text as white. Hue-rotate saves image colors */
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.1);
-  box-shadow: 12px 12px 0px rgba(0,0,0,1);
-  border-color: #333;
+/* Page turn motion: lower-right corner lift */
+@keyframes turnOutNext {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  40%  { transform: translate(-5%, 4%) rotate(-7deg) scale(0.99); opacity: 1; }
+  100% { transform: translate(-22%, 16%) rotate(-20deg) scale(0.93); opacity: 0; }
 }
 
-/* iOS 5-6 Style Diagonal Curl Motion */
-/* Lift down-right corner and roll to upper-left */
-@keyframes rollOutNext {
-  0%   { transform: rotate3d(-1, 1, 0, 0deg); opacity: 1; }
+@keyframes turnInNext {
+  0%   { transform: translate(15%, 12%) rotate(12deg) scale(0.95); opacity: 0; }
   35%  { opacity: 1; }
-  100% { transform: rotate3d(-1, 1, 0, 110deg) translate3d(-15%, -15%, 250px); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
 
-@keyframes rollInPrev {
-  0%   { transform: rotate3d(-1, 1, 0, 110deg) translate3d(-15%, -15%, 250px); opacity: 0; }
-  65%  { opacity: 1; }
-  100% { transform: rotate3d(-1, 1, 0, 0deg); opacity: 1; }
+@keyframes turnOutPrev {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  40%  { transform: translate(5%, 4%) rotate(7deg) scale(0.99); opacity: 1; }
+  100% { transform: translate(22%, 16%) rotate(20deg) scale(0.93); opacity: 0; }
 }
 
-@keyframes stayHidden { 0%, 100% { opacity: 0; } }
-@keyframes stayVisible { 0%, 100% { opacity: 1; } }
+@keyframes turnInPrev {
+  0%   { transform: translate(-15%, 12%) rotate(-12deg) scale(0.95); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
 
-.turn-out-next { animation: rollOutNext 0.6s cubic-bezier(0.3, 0.1, 0.2, 1) forwards; transform-origin: 50% 50%; }
-.turn-in-next  { animation: stayVisible 0.6s forwards; }
+.turn-out-next { animation: turnOutNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-next  { animation: turnInNext  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-out-prev { animation: turnOutPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.turn-in-prev  { animation: turnInPrev  0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
 
-.turn-out-prev { animation: stayVisible 0.6s forwards; }
-.turn-in-prev  { animation: rollInPrev 0.6s cubic-bezier(0.3, 0.1, 0.2, 1) forwards; transform-origin: 50% 50%; }
+/* Zoom controls */
+#rd-zoom-out,
+#rd-zoom-in {
+  min-width: 3.2rem;
+  text-align: center;
+  touch-action: manipulation;
+}
 
 
 /* ════════════════════════════════════════════════════════════════════
    MOBILE
 ════════════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  .essays-header h1 { font-size: 3rem; }
-  .book-card      { width: 120px; }
-  #reader-panel   { width: 98vw; height: 96vh; border-width: 2px; }
-  .rd-btn         { padding: 0 0.8rem; font-size: 0.75rem; border-right-width: 2px; }
-  .page-shell     { padding: 0.5rem; }
-  .reader-page-canvas { box-shadow: 6px 6px 0px rgba(0,0,0,0.85); border-width: 2px;}
+  .shelf-wall     { padding: 1.5rem 1rem 0; }
+  .books-row      { gap: 0.75rem; }
+  .book-card      { width: 110px; }
+  #reader-panel   { width: 98vw; height: calc(var(--vh, 1vh) * 95); }
+  .rd-btn         { padding: 0 0.6rem; font-size: 0.65rem; }
+  .page-shell     { padding: 0.35rem; }
 }
 
 </style>
@@ -461,6 +621,8 @@ main { padding-top: 0 !important; }
     <div id="reader-toolbar">
       <button class="rd-btn" id="rd-prev" aria-label="Previous page">← PREV</button>
       <span id="rd-title"></span>
+      <button class="rd-btn" id="rd-zoom-out" aria-label="Zoom out">−</button>
+      <button class="rd-btn" id="rd-zoom-in" aria-label="Zoom in">+</button>
       <span id="rd-page-info">— / —</span>
       <button class="rd-btn" id="rd-next" aria-label="Next page">NEXT →</button>
       <button class="rd-btn" id="rd-close" aria-label="Close">✕</button>
@@ -468,8 +630,6 @@ main { padding-top: 0 !important; }
 
     <!-- PDF canvases -->
     <div id="reader-paper">
-      <!-- Fixed texture layer sits purely above the canvases -->
-      <div id="paper-texture"></div>
       <div id="reader-loading">Opening…</div>
 
       <div class="page-wrapper" id="wrapper-a" style="z-index:3">
@@ -496,15 +656,11 @@ main { padding-top: 0 !important; }
 <script>
 
 /* ════════════════════════════════════════════════════════════════════════
-   CONFIGURATION  ← edit these two values
+   CONFIGURATION
 ════════════════════════════════════════════════════════════════════════ */
 const ESSAYS_FOLDER_ID = '1aHmGyDIR1M8kSIv2Es-YK3scooYng_Ar';
-const DRIVE_API_KEY    = 'AIzaSyBhAAVs73HLulmFTodnFuo4m5OCn5lzKhg';  // same key as photography
+const DRIVE_API_KEY    = 'AIzaSyBhAAVs73HLulmFTodnFuo4m5OCn5lzKhg';
 
-
-/* ════════════════════════════════════════════════════════════════════════
-   PDF.JS SETUP
-════════════════════════════════════════════════════════════════════════ */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
@@ -512,15 +668,42 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 /* ════════════════════════════════════════════════════════════════════════
    STATE
 ════════════════════════════════════════════════════════════════════════ */
-let pdfDoc      = null;
-let currentPage  = 1;
-let totalPages   = 0;
-let isFlipping   = false;
-let activeSlot   = 'a';   // which canvas-wrapper is on top
+let pdfDoc = null;
+let currentPage = 1;
+let totalPages = 0;
+let isFlipping = false;
+let activeSlot = 'a';
+let rerenderTimer = null;
+const pageLayouts = { a: null, b: null };
+const viewState = {
+  zoom: 1,
+  panX: 0,
+  panY: 0,
+};
+const MIN_ZOOM = 0.75;
+const MAX_ZOOM = 3.5;
+const pointers = new Map();
+let dragState = {
+  active: false,
+  pointerId: null,
+  lastX: 0,
+  lastY: 0,
+};
+let pinchState = null;
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   FETCH ESSAY LIST FROM DRIVE
+   MOBILE VIEWPORT HEIGHT FIX
+════════════════════════════════════════════════════════════════════════ */
+function setRealVH() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+setRealVH();
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   ESSAY LIST
 ════════════════════════════════════════════════════════════════════════ */
 async function fetchEssays() {
   const status = document.getElementById('shelf-status');
@@ -532,7 +715,7 @@ async function fetchEssays() {
     `and trashed=false`
   );
   const fields = 'files(id,name,description,createdTime,size)';
-  const url    = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&key=${DRIVE_API_KEY}&orderBy=createdTime+desc&pageSize=50`;
+  const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&key=${DRIVE_API_KEY}&orderBy=createdTime+desc&pageSize=50`;
 
   try {
     const res = await fetch(url);
@@ -541,7 +724,7 @@ async function fetchEssays() {
       throw new Error(err.error?.message || 'Drive API error');
     }
 
-    const data  = await res.json();
+    const data = await res.json();
     const files = data.files || [];
 
     status.remove();
@@ -554,17 +737,16 @@ async function fetchEssays() {
 
     count.textContent = `${files.length} essay${files.length !== 1 ? 's' : ''}`;
     files.forEach((file, i) => renderBookCard(file, i));
-
   } catch (err) {
     console.error(err);
     status.textContent = `Could not load essays: ${err.message}`;
-    count.textContent  = 'Error';
+    count.textContent = 'Error';
   }
 }
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   RENDER A BOOK CARD
+   BOOK CARDS
 ════════════════════════════════════════════════════════════════════════ */
 const BAND_COLORS = [
   'var(--accent-red)',
@@ -574,11 +756,11 @@ const BAND_COLORS = [
 const SHAPES = ['circle', 'square', 'triangle'];
 
 function renderBookCard(file, index) {
-  const row      = document.getElementById('books-row');
-  const color    = BAND_COLORS[index % BAND_COLORS.length];
-  const shape    = SHAPES[index % SHAPES.length];
-  const name     = stripExtension(file.name);
-  const dateStr  = formatDate(file.createdTime);
+  const row = document.getElementById('books-row');
+  const color = BAND_COLORS[index % BAND_COLORS.length];
+  const shape = SHAPES[index % SHAPES.length];
+  const name = stripExtension(file.name);
+  const dateStr = formatDate(file.createdTime);
 
   const card = document.createElement('div');
   card.className = 'book-card';
@@ -608,11 +790,11 @@ function renderBookCard(file, index) {
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   OPEN ESSAY
+   PDF OPEN / RENDER
 ════════════════════════════════════════════════════════════════════════ */
 async function openEssay(fileId, title) {
   const overlay = document.getElementById('reader-overlay');
-  const panel   = document.getElementById('reader-panel');
+  const panel = document.getElementById('reader-panel');
   const loading = document.getElementById('reader-loading');
   const rdTitle = document.getElementById('rd-title');
 
@@ -621,6 +803,15 @@ async function openEssay(fileId, title) {
   totalPages = 0;
   activeSlot = 'a';
   isFlipping = false;
+  viewState.zoom = 1;
+  viewState.panX = 0;
+  viewState.panY = 0;
+  pageLayouts.a = null;
+  pageLayouts.b = null;
+  pointers.clear();
+  dragState.active = false;
+  dragState.pointerId = null;
+  pinchState = null;
 
   overlay.classList.remove('closing');
   overlay.classList.add('open');
@@ -634,8 +825,8 @@ async function openEssay(fileId, title) {
   clearCanvas('b');
 
   loading.style.display = 'flex';
-  loading.textContent   = 'Opening…';
-  rdTitle.textContent   = title;
+  loading.textContent = 'Opening…';
+  rdTitle.textContent = title;
   updatePageInfo();
   updateNavButtons();
 
@@ -643,51 +834,52 @@ async function openEssay(fileId, title) {
 
   try {
     const pdfUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${DRIVE_API_KEY}`;
-    const res    = await fetch(pdfUrl);
+    const res = await fetch(pdfUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const buffer = await res.arrayBuffer();
-    pdfDoc       = await pdfjsLib.getDocument({ data: buffer }).promise;
-    totalPages   = pdfDoc.numPages;
-    currentPage  = 1;
+    pdfDoc = await pdfjsLib.getDocument({ data: buffer }).promise;
+    totalPages = pdfDoc.numPages;
+    currentPage = 1;
+
+    await new Promise(r => requestAnimationFrame(r));
+    await new Promise(r => setTimeout(r, 50));
 
     await renderToSlot(currentPage, 'a');
     loading.style.display = 'none';
     updatePageInfo();
     updateNavButtons(false);
-
   } catch (err) {
     console.error('PDF load error:', err);
     loading.textContent = `Could not open PDF: ${err.message}`;
   }
 }
 
-
-/* ════════════════════════════════════════════════════════════════════════
-   SHARP PDF RENDERING
-════════════════════════════════════════════════════════════════════════ */
 async function renderToSlot(pageNum, slot) {
   if (!pdfDoc) return;
 
   const canvas = document.getElementById(`canvas-${slot}`);
-  const paper   = document.getElementById('reader-paper');
-  const page    = await pdfDoc.getPage(pageNum);
+  const paper = document.getElementById('reader-paper');
+  const page = await pdfDoc.getPage(pageNum);
 
   const dpr = Math.max(1, window.devicePixelRatio || 1);
-  const paperW = paper.clientWidth - 40;
-  const paperH = paper.clientHeight - 40;
+  const padding = window.matchMedia('(max-width: 600px)').matches ? 12 : 40;
+  const paperW = Math.max(0, paper.clientWidth - padding);
+  const paperH = Math.max(0, paper.clientHeight - padding);
 
   const base = page.getViewport({ scale: 1 });
-  const scale = Math.min(paperW / base.width, paperH / base.height);
-  const viewport = page.getViewport({ scale });
+  const fitScale = Math.min(paperW / base.width, paperH / base.height);
+  const fitViewport = page.getViewport({ scale: fitScale });
 
-  const renderWidth  = Math.floor(viewport.width * dpr);
-  const renderHeight = Math.floor(viewport.height * dpr);
+  canvas.width = Math.floor(fitViewport.width * dpr);
+  canvas.height = Math.floor(fitViewport.height * dpr);
+  canvas.style.width = `${Math.floor(fitViewport.width)}px`;
+  canvas.style.height = `${Math.floor(fitViewport.height)}px`;
 
-  canvas.width = renderWidth;
-  canvas.height = renderHeight;
-  canvas.style.width = `${Math.floor(viewport.width)}px`;
-  canvas.style.height = `${Math.floor(viewport.height)}px`;
+  pageLayouts[slot] = {
+    width: fitViewport.width,
+    height: fitViewport.height,
+  };
 
   const context = canvas.getContext('2d', { alpha: false });
   context.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -695,9 +887,10 @@ async function renderToSlot(pageNum, slot) {
 
   await page.render({
     canvasContext: context,
-    viewport,
-    transform: [dpr, 0, 0, dpr, 0, 0]
+    viewport: fitViewport
   }).promise;
+
+  applyTransform(slot);
 }
 
 function clearCanvas(slot) {
@@ -706,9 +899,84 @@ function clearCanvas(slot) {
   ctx.clearRect(0, 0, c.width, c.height);
 }
 
+function applyTransform(slot) {
+  const canvas = document.getElementById(`canvas-${slot}`);
+  canvas.style.transform = `translate(-50%, -50%) translate(${viewState.panX}px, ${viewState.panY}px) scale(${viewState.zoom})`;
+}
+
+function applyTransformToAll() {
+  applyTransform('a');
+  applyTransform('b');
+}
+
+function clampZoom(z) {
+  return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z));
+}
+
+function clampPanForSlot(slot) {
+  const layout = pageLayouts[slot] || pageLayouts[activeSlot];
+  if (!layout) return;
+
+  const paper = document.getElementById('reader-paper');
+  const paperW = paper.clientWidth;
+  const paperH = paper.clientHeight;
+  const maxPanX = Math.max(0, (layout.width * viewState.zoom - paperW) / 2);
+  const maxPanY = Math.max(0, (layout.height * viewState.zoom - paperH) / 2);
+
+  viewState.panX = Math.max(-maxPanX, Math.min(maxPanX, viewState.panX));
+  viewState.panY = Math.max(-maxPanY, Math.min(maxPanY, viewState.panY));
+}
+
+function clampAndApply(slot = activeSlot) {
+  clampPanForSlot(slot);
+  applyTransformToAll();
+}
+
+function zoomAt(clientX, clientY, nextZoom) {
+  const paper = document.getElementById('reader-paper');
+  const rect = paper.getBoundingClientRect();
+  const px = clientX - rect.left - rect.width / 2;
+  const py = clientY - rect.top - rect.height / 2;
+
+  const oldZoom = viewState.zoom;
+  const z = clampZoom(nextZoom);
+  if (z === oldZoom) return;
+
+  const ratio = z / oldZoom;
+  viewState.panX = px - (px - viewState.panX) * ratio;
+  viewState.panY = py - (py - viewState.panY) * ratio;
+  viewState.zoom = z;
+  clampAndApply();
+}
+
+function zoomBy(factor) {
+  const paper = document.getElementById('reader-paper');
+  const rect = paper.getBoundingClientRect();
+  zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, viewState.zoom * factor);
+}
+
+function resetZoom() {
+  viewState.zoom = 1;
+  viewState.panX = 0;
+  viewState.panY = 0;
+  clampAndApply();
+}
+
+function scheduleRerender() {
+  if (!pdfDoc) return;
+  clearTimeout(rerenderTimer);
+  rerenderTimer = setTimeout(async () => {
+    if (!pdfDoc) return;
+    clearCanvas('a');
+    clearCanvas('b');
+    await renderToSlot(currentPage, activeSlot);
+    applyTransformToAll();
+  }, 120);
+}
+
 
 /* ════════════════════════════════════════════════════════════════════════
-   PAGE TURN - Diagonal Peel
+   PAGE TURN
 ════════════════════════════════════════════════════════════════════════ */
 async function flipPage(direction) {
   if (isFlipping || !pdfDoc) return;
@@ -719,23 +987,18 @@ async function flipPage(direction) {
   isFlipping = true;
   updateNavButtons(true);
 
-  const stagingSlot    = activeSlot === 'a' ? 'b' : 'a';
-  const activeWrapper  = document.getElementById(`wrapper-${activeSlot}`);
+  const stagingSlot = activeSlot === 'a' ? 'b' : 'a';
+  const activeWrapper = document.getElementById(`wrapper-${activeSlot}`);
   const stagingWrapper = document.getElementById(`wrapper-${stagingSlot}`);
 
   await renderToSlot(nextPage, stagingSlot);
+  applyTransform(stagingSlot);
 
-  // Z-index handling for correct overlapping during animation
-  if (direction === 'next') {
-    stagingWrapper.style.zIndex = '2';
-    activeWrapper.style.zIndex  = '3';
-  } else {
-    stagingWrapper.style.zIndex = '3';
-    activeWrapper.style.zIndex  = '2';
-  }
+  stagingWrapper.style.zIndex = '2';
+  activeWrapper.style.zIndex = '3';
 
   const outClass = direction === 'next' ? 'turn-out-next' : 'turn-out-prev';
-  const inClass  = direction === 'next' ? 'turn-in-next'  : 'turn-in-prev';
+  const inClass = direction === 'next' ? 'turn-in-next' : 'turn-in-prev';
 
   activeWrapper.classList.remove('turn-out-next', 'turn-out-prev', 'turn-in-next', 'turn-in-prev');
   stagingWrapper.classList.remove('turn-out-next', 'turn-out-prev', 'turn-in-next', 'turn-in-prev');
@@ -746,18 +1009,17 @@ async function flipPage(direction) {
   setTimeout(() => {
     activeWrapper.classList.remove(outClass);
     stagingWrapper.classList.remove(inClass);
-    
-    // Reset to idle stack
     stagingWrapper.style.zIndex = '3';
-    activeWrapper.style.zIndex  = '2';
+    activeWrapper.style.zIndex = '2';
 
-    activeSlot  = stagingSlot;
+    activeSlot = stagingSlot;
     currentPage = nextPage;
-    isFlipping  = false;
+    isFlipping = false;
 
     updatePageInfo();
     updateNavButtons(false);
-  }, 620); // Syncs with CSS animation timing + small buffer
+    applyTransformToAll();
+  }, 460);
 }
 
 
@@ -766,11 +1028,10 @@ async function flipPage(direction) {
 ════════════════════════════════════════════════════════════════════════ */
 function closeReader() {
   const overlay = document.getElementById('reader-overlay');
-  const panel   = document.getElementById('reader-panel');
+  const panel = document.getElementById('reader-panel');
 
   if (!overlay.classList.contains('open') || overlay.classList.contains('closing')) return;
 
-  // Add closing to overlay immediately to sync fade outs
   overlay.classList.add('closing');
   panel.classList.remove('anim-open');
   panel.classList.add('anim-close');
@@ -784,7 +1045,9 @@ function closeReader() {
 }
 
 
-/* ── UI HELPERS ──────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════════════════════ */
 function updatePageInfo() {
   const el = document.getElementById('rd-page-info');
   el.textContent = pdfDoc ? `${currentPage} / ${totalPages}` : '— / —';
@@ -813,11 +1076,126 @@ function stripExtension(name) {
   return name.replace(/\.[^.]+$/, '');
 }
 
+function getPaperPoint(e) {
+  const paper = document.getElementById('reader-paper');
+  const rect = paper.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left - rect.width / 2,
+    y: e.clientY - rect.top - rect.height / 2,
+  };
+}
 
-/* ── EVENT LISTENERS ─────────────────────────────────────────────────── */
-document.getElementById('rd-prev').addEventListener('click',  () => flipPage('prev'));
-document.getElementById('rd-next').addEventListener('click',  () => flipPage('next'));
+function distance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function midpoint(a, b) {
+  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   TOUCH / POINTER ZOOM & DRAG
+════════════════════════════════════════════════════════════════════════ */
+const readerPaper = document.getElementById('reader-paper');
+
+readerPaper.addEventListener('pointerdown', e => {
+  const overlay = document.getElementById('reader-overlay');
+  if (!overlay.classList.contains('open') || !pdfDoc) return;
+
+  e.preventDefault();
+  readerPaper.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
+
+  if (pointers.size === 1) {
+    dragState.active = viewState.zoom > 1.01;
+    dragState.pointerId = e.pointerId;
+    dragState.lastX = e.clientX;
+    dragState.lastY = e.clientY;
+  } else if (pointers.size === 2) {
+    const pts = [...pointers.values()].map(p => ({ x: p.x, y: p.y }));
+    pinchState = {
+      startDist: distance(pts[0], pts[1]),
+      startZoom: viewState.zoom,
+      startPanX: viewState.panX,
+      startPanY: viewState.panY,
+      startMid: midpoint(pts[0], pts[1])
+    };
+    dragState.active = false;
+  }
+}, { passive: false });
+
+readerPaper.addEventListener('pointermove', e => {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
+
+  if (pointers.size === 2 && pinchState) {
+    e.preventDefault();
+    const pts = [...pointers.values()].map(p => ({ x: p.x, y: p.y }));
+    const currentDist = distance(pts[0], pts[1]);
+    const currentMid = midpoint(pts[0], pts[1]);
+    const rect = readerPaper.getBoundingClientRect();
+    const px = currentMid.x - rect.left - rect.width / 2;
+    const py = currentMid.y - rect.top - rect.height / 2;
+    const newZoom = clampZoom(pinchState.startZoom * (currentDist / Math.max(1, pinchState.startDist)));
+    const ratio = newZoom / pinchState.startZoom;
+
+    viewState.zoom = newZoom;
+    viewState.panX = px - (px - pinchState.startPanX) * ratio;
+    viewState.panY = py - (py - pinchState.startPanY) * ratio;
+    clampAndApply();
+    return;
+  }
+
+  if (dragState.active && pointers.size === 1 && e.pointerId === dragState.pointerId && viewState.zoom > 1.01) {
+    e.preventDefault();
+    const dx = e.clientX - dragState.lastX;
+    const dy = e.clientY - dragState.lastY;
+    dragState.lastX = e.clientX;
+    dragState.lastY = e.clientY;
+    viewState.panX += dx;
+    viewState.panY += dy;
+    clampAndApply();
+  }
+}, { passive: false });
+
+function endPointer(e) {
+  if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinchState = null;
+  if (pointers.size === 0) {
+    dragState.active = false;
+    dragState.pointerId = null;
+  } else if (pointers.size === 1) {
+    const only = [...pointers.entries()][0];
+    dragState.pointerId = only[0];
+    dragState.lastX = only[1].x;
+    dragState.lastY = only[1].y;
+    dragState.active = viewState.zoom > 1.01;
+  }
+}
+
+readerPaper.addEventListener('pointerup', endPointer);
+readerPaper.addEventListener('pointercancel', endPointer);
+readerPaper.addEventListener('lostpointercapture', endPointer);
+
+readerPaper.addEventListener('wheel', e => {
+  const overlay = document.getElementById('reader-overlay');
+  if (!overlay.classList.contains('open') || !pdfDoc) return;
+  if (!e.ctrlKey) return;
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.08 : 0.92;
+  zoomAt(e.clientX, e.clientY, viewState.zoom * factor);
+}, { passive: false });
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   EVENTS
+════════════════════════════════════════════════════════════════════════ */
+document.getElementById('rd-prev').addEventListener('click', () => flipPage('prev'));
+document.getElementById('rd-next').addEventListener('click', () => flipPage('next'));
 document.getElementById('rd-close').addEventListener('click', closeReader);
+document.getElementById('rd-zoom-out').addEventListener('click', () => zoomBy(0.88));
+document.getElementById('rd-zoom-in').addEventListener('click', () => zoomBy(1.14));
 
 document.getElementById('reader-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('reader-overlay')) closeReader();
@@ -826,13 +1204,32 @@ document.getElementById('reader-overlay').addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   const overlay = document.getElementById('reader-overlay');
   if (!overlay.classList.contains('open')) return;
-  if (e.key === 'Escape')     closeReader();
+  if (e.key === 'Escape') closeReader();
   if (e.key === 'ArrowRight') flipPage('next');
-  if (e.key === 'ArrowLeft')  flipPage('prev');
+  if (e.key === 'ArrowLeft') flipPage('prev');
+  if (e.key === '+' || e.key === '=') zoomBy(1.14);
+  if (e.key === '-' || e.key === '_') zoomBy(0.88);
+  if (e.key === '0') resetZoom();
+});
+
+window.addEventListener('resize', () => {
+  setRealVH();
+  if (document.getElementById('reader-overlay').classList.contains('open')) {
+    scheduleRerender();
+  }
+});
+
+window.addEventListener('orientationchange', () => {
+  setRealVH();
+  if (document.getElementById('reader-overlay').classList.contains('open')) {
+    setTimeout(scheduleRerender, 150);
+  }
 });
 
 
-/* ── KICK OFF ────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════════
+   KICK OFF
+════════════════════════════════════════════════════════════════════════ */
 fetchEssays();
 
 </script>
